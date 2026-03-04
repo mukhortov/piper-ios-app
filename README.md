@@ -12,6 +12,8 @@
   <a href="https://testflight.apple.com/join/Adkg5F5H">Join the Beta today! ✨</a>
 </h3>
 
+[![Build](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml)
+
 # 📥 Cloning & Building Piper
 
 ## System Requirements
