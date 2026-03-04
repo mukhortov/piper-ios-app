@@ -52,15 +52,15 @@ jobs:
           APP_PROFILE: ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}
           EXT_PROFILE: ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}
         run: |
-          mkdir -p ~/Library/Developer/Xcode/UserData/Provisioning
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
           APP_PATH=$RUNNER_TEMP/app.mobileprovision
           echo -n "$APP_PROFILE" | base64 --decode -o $APP_PATH
           EXT_PATH=$RUNNER_TEMP/ext.mobileprovision
           echo -n "$EXT_PROFILE" | base64 --decode -o $EXT_PATH
 
-          cp $APP_PATH ~/Library/Developer/Xcode/UserData/Provisioning
-          cp $EXT_PATH ~/Library/Developer/Xcode/UserData/Provisioning
+          cp $APP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $EXT_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       - name: Prepare Project
         run: |
           mise run lfs

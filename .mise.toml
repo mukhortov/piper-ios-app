@@ -11,7 +11,6 @@ description = "Generates xcode project"
 run = """
    tuist version
    tuist install
-   tuist cache
    tuist generate --no-open --verbose
 """
 

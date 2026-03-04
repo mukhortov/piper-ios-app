@@ -1,2 +1,4 @@
 #include "release.xcconfig"
 #include "extension_common.xcconfig"
+
+PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*] = Piper TTS Distr PP

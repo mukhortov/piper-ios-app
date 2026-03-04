@@ -4,8 +4,6 @@ MACOSX_DEPLOYMENT_TARGET = 13.3
 COMMON_FEATURES_FLAGS =
 
 // Signing information
-CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
-CODE_SIGN_IDENTITY[sdk=macosx*] = Apple Development
 CODE_SIGN_STYLE = Manual;
 DEVELOPMENT_TEAM = 5LBP9YR5SD
 

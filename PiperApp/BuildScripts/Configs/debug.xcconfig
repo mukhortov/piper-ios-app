@@ -4,3 +4,6 @@ ENABLE_TESTABILITY = YES
 LLVM_LTO = NO
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
+
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Developer
+CODE_SIGN_IDENTITY[sdk=macosx*] = Apple Development
