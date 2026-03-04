@@ -40,32 +40,15 @@ jobs:
           echo "Full Version: $MARKETING_VERSION($GITHUB_RUN_NUMBER)"
         shell: bash
 
-      - name: Install Apple Signing Assets
+      - name: Install Apple Certificate
+        uses: apple-actions/import-codesign-certs@v2
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
-          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-          APP_PROVISION_PROFILE_BASE64: ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}
-          EXT_PROVISION_PROFILE_BASE64: ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}
-          APPLE_WWDRCAG3_BASE64: ${{ secrets.APPLE_WWDRCAG3 }}
-        run: |     
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          
-          # Import assets to temporary keychain
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $RUNNER_TEMP/cert.p12
-          echo -n "$APPLE_WWDRCAG3_BASE64" | base64 --decode -o $RUNNER_TEMP/wwdr.cer
-          
-          security create-keychain -p "$P12_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$P12_PASSWORD" $KEYCHAIN_PATH
-          security import $RUNNER_TEMP/cert.p12 -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security import $RUNNER_TEMP/wwdr.cer -k $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-
-          # Apply provisioning profiles
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          echo -n "$APP_PROVISION_PROFILE_BASE64" | base64 --decode -o ~/Library/MobileDevice/Provisioning\ Profiles/app.mobileprovision
-          echo -n "$EXT_PROVISION_PROFILE_BASE64" | base64 --decode -o ~/Library/MobileDevice/Provisioning\ Profiles/ext.mobileprovision
+        with:
+          p12-file-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.P12_PASSWORD }}
+          provisioning-profiles-base64: |
+            ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}
+            ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}
 
       - name: Prepare Project
         run: |
