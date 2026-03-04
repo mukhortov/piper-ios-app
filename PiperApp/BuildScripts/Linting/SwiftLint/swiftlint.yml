@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Ihor Shevchuk
+
 disabled_rules: # rule identifiers to exclude from running
   - todo
   - file_header
@@ -27,10 +30,8 @@ analyzer_rules:
   - unused_import
 included: # paths to include during linting. `--path` is ignored if present.
 excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - ${SRCROOT}/fastlane
-  - ${SRCROOT}/BuildOutput
-  - ${SRCROOT}/BuildDerivedData
-  - ${SRCROOT}/Dependencies
+  - ${SRCROOT}/Derived
+  - ${SRCROOT}/Project.swift
 
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level

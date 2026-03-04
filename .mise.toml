@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Ihor Shevchuk
+
+[tools]
+tuist = "4.153.0"
+swiftlint = "latest"
+git-lfs = "latest"
+
+[tasks.generate]
+description = "Generates xcode project"
+run = """
+   tuist version
+   tuist install
+   tuist cache
+   tuist generate --no-open --verbose
+"""
+
+[tasks.edit]
+description = "Generates xcode project"
+run = """
+   tuist edit
+"""
+
+[tasks.lint]
+description = "Runs linters"
+usage = '''
+flag "--fix" help="Attempt to fix lint issues"
+'''
+run = '''
+REPORT_TYPE="xcode" \
+./PiperApp/BuildScripts/Linting/SwiftLint/RunSwiftLint.sh ${usage_fix:+--fix}
+'''
+
+[tasks.lfs]
+description = "Ensure Git LFS files are pulled"
+run = "git lfs install && git lfs pull"
+
+[tasks.build]
+description = "Build for Simulator (default) or Device with a build number"
+usage = '''
+arg "<build_number>" help="The CI build number"
+arg "[target]" help="Build target" default="simulator" { choices "simulator" "device" }
+'''
+run = '''
+# usage_target defaults to "simulator"
+# usage_build_number is the second positional argument
+
+if [ "$usage_target" = "device" ]; then
+   ./PiperApp/BuildScripts/Scripts/BuildDevice.sh "$usage_build_number"
+else
+  ./PiperApp/BuildScripts/Scripts/BuildSimulator.sh "$usage_build_number"
+fi
+'''

@@ -1,0 +1,2 @@
+#include "release.xcconfig"
+#include "app_common.xcconfig"

@@ -1,9 +1,5 @@
-//
-//  Logger.swift
-//  PiperappUtils
-//
-//  Created by Ihor Shevchuk on 04.02.2024.
-//
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Ihor Shevchuk
 
 import Foundation
 import OSLog
@@ -26,7 +22,11 @@ public class Log {
     }()
 
     private static let logLevelLock = NSLock()
+#if DEBUG
+    private static var _logLevel: Log.Level = .debug
+#else
     private static var _logLevel: Log.Level = .error
+#endif
 
     public enum Level: String, Codable, CaseIterable, Identifiable {
         case debug
