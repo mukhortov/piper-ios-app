@@ -90,7 +90,6 @@ Open the generated `.xcworkspace` in Xcode.
 
 | Task | Description |
 |------|-------------|
-| `mise run lfs` | Pull Git LFS assets |
 | `mise run install` | Resolve SPM dependencies (`Package.swift`) |
 | `mise run generate` | Generate Xcode project |
 | `mise run build <number> [simulator\|device]` | Build from command line (for CI) |

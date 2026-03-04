@@ -14,6 +14,8 @@ run = "tuist install"
 description = "Generates Xcode project (run install first if deps changed)"
 run = """
    tuist version
+   tuist install
+   tuist cache
    tuist generate --no-open --verbose
 """
 
