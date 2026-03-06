@@ -41,6 +41,7 @@ jobs:
     env:
       CI_BUILD: "1"
       BUILD_OUTPUT: "${{ github.workspace }}/BuildOutput"
+      BUILD_TARGET: "${{ github.event_name == 'push' && 'device' || 'simulator' }}"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -61,12 +62,13 @@ jobs:
 
       - name: Install Apple Certificate
         uses: apple-actions/import-codesign-certs@v2
-        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        if: env.BUILD_TARGET == 'device'
         with:
           p12-file-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           p12-password: ${{ secrets.P12_PASSWORD }}
 
       - name: Install Provisioning Profiles
+        if: env.BUILD_TARGET == 'device'
         env:
           APP_PROFILE: ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}
           EXT_PROFILE: ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}
@@ -90,11 +92,10 @@ jobs:
 
       - name: Build
         run: |
-          TARGET=${{ github.event_name == 'push' && 'device' || 'simulator' }}
-          mise run build $BUILD_NUMBER $TARGET
+          mise run build $BUILD_NUMBER $BUILD_TARGET
 
       - name: Store IPA
-        if: github.event_name == 'push'
+        if: env.BUILD_TARGET == 'device'
         uses: actions/upload-artifact@v4
         with:
           name: Piper-Build-${{ env.BUILD_NUMBER }}
