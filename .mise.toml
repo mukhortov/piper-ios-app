@@ -6,11 +6,14 @@ tuist = "4.153.0"
 swiftlint = "latest"
 git-lfs = "latest"
 
+[tasks.install]
+description = "Resolve and fetch SPM dependencies (Package.swift)"
+run = "tuist install"
+
 [tasks.generate]
-description = "Generates xcode project"
+description = "Generates Xcode project (run install first if deps changed)"
 run = """
    tuist version
-   tuist install
    tuist generate --no-open --verbose
 """
 

@@ -69,13 +69,26 @@ mise run lfs
 
 ## Generate the Xcode Project
 
-Piper uses **Tuist**. Generate the workspace:
+Piper uses **Tuist** with Swift Package Manager for dependencies. First resolve SPM dependencies, then generate the workspace:
 
 ```bash
+mise run install
 mise run generate
 ```
 
 Open the generated `.xcworkspace` in Xcode.
+
+> **Note:** Run `mise run install` whenever `Package.swift` or dependencies change. Otherwise `mise run generate` alone is sufficient.
+
+### Available Mise Tasks
+
+| Task | Description |
+|------|-------------|
+| `mise run lfs` | Pull Git LFS assets |
+| `mise run install` | Resolve SPM dependencies (`Package.swift`) |
+| `mise run generate` | Generate Xcode project |
+| `mise run build <number> [simulator\|device]` | Build from command line (for CI) |
+| `mise run lint [--fix]` | Run SwiftLint |
 
 ---
 

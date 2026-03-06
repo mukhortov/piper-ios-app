@@ -48,12 +48,6 @@ let appEntitlements: [String: Plist.Value] = [
 let project = Project(
     name: projectName,
     organizationName: "Ihor Shevchuk",
-    packages: [
-        .remote(url: "https://github.com/IhorShevchuk/espeak-ng-spm.git",
-                requirement: .upToNextMinor(from: "2025.9.17")),
-        .remote(url: "https://github.com/IhorShevchuk/piper-objc",
-                requirement: .upToNextMinor(from: "0.2.2"))
-    ],
     targets: [
         .target(
             name: projectName,
@@ -84,7 +78,7 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: sharedUtilsName, status: .required),
-                .target(name: ttsExtensionName, status: .required),
+                .target(name: ttsExtensionName, status: .required)
             ],
             settings: .settings(configurations:
                                     [
@@ -107,8 +101,9 @@ let project = Project(
                 entitlements: .dictionary(extensionEntitlements),
                 dependencies: [
                     .target(name: sharedUtilsName, status: .required),
-                    .package(product: "espeak-ng-data"),
-                    .package(product: "piper-objc")
+                    .external(name: "espeak-ng-data"),
+                    .external(name: "piper-objc"),
+                    .sdk(name: "c++", type: .library, status: .required)
                 ], settings: .settings(configurations: [
                     .debug(name: "Debug",
                            xcconfig: "\(configsPath)/extension_debug.xcconfig"),

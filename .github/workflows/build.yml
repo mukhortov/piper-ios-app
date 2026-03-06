@@ -4,8 +4,27 @@ name: Build
 on:
   push:
     branches: ['main']
+    # Only run when app source, xcconfig, scripts, Tuist project, or .mise.toml change (ignores docs, licenses, etc.)
+    paths:
+      - 'PiperApp/**'
+      - 'PiperAppUtils/**'
+      - 'PiperappUtils/**'
+      - 'PiperTTS/**'
+      - 'Project.swift'
+      - 'Package.swift'
+      - '.mise.toml'
+      - '.github/workflows/build.yml'
   pull_request:
     branches: ['main']
+    paths:
+      - 'PiperApp/**'
+      - 'PiperAppUtils/**'
+      - 'PiperappUtils/**'
+      - 'PiperTTS/**'
+      - 'Project.swift'
+      - 'Package.swift'
+      - '.mise.toml'
+      - '.github/workflows/build.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -66,6 +85,7 @@ jobs:
           mise run lfs
           rm -fr *.xcodeproj | echo "Failed to remove project"
           rm -fr *.xcworkspace | echo "Failed to remove workspace"
+          mise run install
           mise run generate
 
       - name: Build

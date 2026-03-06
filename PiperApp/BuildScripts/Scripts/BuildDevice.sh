@@ -11,8 +11,8 @@ echo "BUILD_NUMBER=${BUILD_NUMBER}"
 export BUILD_NUMBER
 
 xcodebuild clean archive \
+  -workspace "Piper.xcworkspace" \
   -configuration "Release" \
-  -target Piper \
   -scheme Piper \
   -allowProvisioningUpdates \
   -archivePath "BuildOutput/Piper.xcarchive" \
