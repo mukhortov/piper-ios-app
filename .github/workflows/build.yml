@@ -100,7 +100,22 @@ jobs:
         with:
           name: Piper-Build-${{ env.BUILD_NUMBER }}
           path: ${{ env.BUILD_OUTPUT }}/binary/iOS/Piper.ipa
-          retention-days: 7
+          retention-days: 3
+      
+      - name: Upload To App Store Connect
+        if: env.BUILD_TARGET == 'device'
+        run: |
+          UPLOAD_FILES=(
+            "${{ env.BUILD_OUTPUT }}/binary/iOS/Piper.ipa"
+          )
+          echo "Uploading to App Store..."
+          for FILE in "${UPLOAD_FILES[@]}"; do
+            echo "Uploading $FILE ..."
+            xcrun altool --upload-app  \
+              -f "$FILE" \
+              -u "${{ secrets.APPLE_ID_USERNAME }}" \
+              -p "${{ secrets.APPLE_ID_APP_SPECIFIC_PASSWORD }}"
+          done
 
       - name: Clean up
         if: ${{ always() }}
