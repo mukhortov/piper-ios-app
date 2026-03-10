@@ -1,16 +1,22 @@
 <p align="center">
-  <img src="https://www.apple.com/v/app-store/c/images/overview/icon_appstore__ev0z770zyxoy_large_2x.png" width="130">
-  <a href="https://testflight.apple.com/join/Adkg5F5H">
-    <img src="PiperApp/Resources/piper_apple_app_logo.png" width="130">
+  <a href="https://apps.apple.com/us/app/piper-neural-tts/id6759636010">
+    <img src="PiperApp/Resources/piper_apple_app_logo.png" width="130"><br>
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="180">
   </a>
 </p>
 
-
 <h3 align="center">
-  Piper for iOS is here! 🚀 Our Public Beta is officially live and we want your feedback. 
-  Be among the first to experience high-quality local TTS on your iPhone. 
-  <a href="https://testflight.apple.com/join/Adkg5F5H">Join the Beta today! ✨</a>
+  Piper for iOS is now available on the App Store! 🎉<br>
+  Experience high-quality <b>offline neural text-to-speech</b> directly on your device.<br><br>
+  Want to try the latest features early?<br>
+  Join the <a href="https://testflight.apple.com/join/Adkg5F5H">TestFlight Beta</a> 🚀
 </h3>
+
+<p align="center">
+  <a href="https://testflight.apple.com/join/Adkg5F5H">
+    <img src="https://camo.githubusercontent.com/f8394f7cf70cc272e627e53e2d46241bc3fc83f145ee9e95a09a248efa2e72e8/68747470733a2f2f616e6f746865726c656e732e6170702f74657374666c696768742d62616467652e706e67" width="180">
+  </a>
+</p>
 
 [![Build](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml)
 
