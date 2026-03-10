@@ -31,7 +31,7 @@ analyzer_rules:
 included: # paths to include during linting. `--path` is ignored if present.
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - ${SRCROOT}/Derived
-  - ${SRCROOT}/Project.swift
+  - ${SRCROOT}/.build/
 
 # configurable rules can be customized from this configuration file
 # binary rules can set their severity level
