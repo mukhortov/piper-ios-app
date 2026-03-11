@@ -82,6 +82,31 @@ jobs:
 
           cp $APP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           cp $EXT_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Xcode version
+        env:
+          XCODE_VERSION: "26"
+        run: |
+          APPLICATIONS_FOLDER="/Applications"
+          echo "Installed Xcode versions:"
+          for XCODE in "${APPLICATIONS_FOLDER}"/Xcode*.app; do
+          echo "== $XCODE =="
+          "$XCODE/Contents/Developer/usr/bin/xcodebuild" -version
+          echo ""
+          done
+          
+          TARGET="${APPLICATIONS_FOLDER}/Xcode_${XCODE_VERSION}.app"
+          if [ -d "$TARGET" ]; then
+            echo "Switching to Xcode ${XCODE_VERSION}"
+            sudo xcode-select -s "$TARGET"
+          else
+            echo "Xcode ${XCODE_VERSION} not installed, keeping default"
+          fi
+          echo ""
+          echo "Active Xcode:"
+          xcode-select -p
+          xcodebuild -version
+
       - name: Prepare Project
         run: |
           mise run lfs
