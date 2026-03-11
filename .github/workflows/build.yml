@@ -85,7 +85,7 @@ jobs:
 
       - name: Xcode version
         env:
-          XCODE_VERSION: "26"
+          XCODE_VERSION: "26.3"
         run: |
           APPLICATIONS_FOLDER="/Applications"
           echo "Installed Xcode versions:"
