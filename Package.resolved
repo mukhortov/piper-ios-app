@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/IhorShevchuk/piper-objc",
       "state" : {
-        "revision" : "7b95436aeb2b9bc718865d1d10f4b2b9df0c420e",
-        "version" : "0.2.3"
+        "revision" : "907fc4e40484b784e09fa3b8d6cb8f25d60db661",
+        "version" : "0.2.4"
       }
     },
     {

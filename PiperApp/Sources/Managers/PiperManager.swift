@@ -59,19 +59,21 @@ class PiperManager {
     }
 #endif
     
-    func playSample(demoText: String) async {
+    func playSample(demoText: String,
+                    speakerId: Int) async {
 #if os(iOS)
         activatePlaybackMode()
         setAudioSession(active: true)
 #endif
         await setIsPlaying(true)
         if isVoiceInstalled {
-            let voiceIdentifer = "dev.ihor-shevchuk.piperapp.pipertts.\(modelInfo?.dataset.lowercased() ?? "")"
+            let voiceIdentifer = "dev.ihor-shevchuk.piperapp.pipertts.\(modelInfo?.dataset.lowercased() ?? "")_\(speakerId)"
             if let voice = AVSpeechSynthesisVoice(identifier: voiceIdentifer) {
                 syntheser = SpeechSynthesizer()
                 await syntheser?.speak(demoText, voice: voice)
             } else {
-                await audioUnit.play(text: demoText)
+                await audioUnit.play(text: demoText,
+                                     speakerId: speakerId)
             }
         }
         

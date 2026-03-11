@@ -92,14 +92,19 @@ class PiperAudioUnit {
         Log.debug("Disconnected audio unit successfully.")
     }
     
-    func play(text: String) async {
+    func play(text: String,
+              speakerId: Int) async {
         
         guard let audioUnit else {
             Log.error("Audio unit is nil. Can't play text.")
             return
         }
         
-        guard let voice = AVSpeechSynthesisProviderVoice.supportedVoices.first else {
+        let voice = AVSpeechSynthesisProviderVoice.supportedVoices.first(where: { voice in
+            return voice.identifier.hasSuffix("\(speakerId)")
+        }) ?? AVSpeechSynthesisProviderVoice.supportedVoices.first
+        
+        guard let voice else {
             Log.error("No supported voices. Can't play text.")
             return
         }

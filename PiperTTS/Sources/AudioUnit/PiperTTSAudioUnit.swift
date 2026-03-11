@@ -15,6 +15,7 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
     private var format: AVAudioFormat
 
     var piper: Piper?
+    var model: ModelInfo?
     
     private var outputDataLock = os_unfair_lock_s()
     private var outputData: [Float] = []
@@ -41,17 +42,20 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
         try super.allocateRenderResources()
         Log.debug("allocateRenderResources")
         if piper == nil {
-            let model = FileManager.Constants.modelURL?.path()
-            let config = FileManager.Constants.jsonModelURL?.path()
-            piper = Piper(modelPath: model!,
-                          andConfigPath: config!)
-            piper?.delegate = self
+            if let path = FileManager.ModelPaths.engine,
+               let modelInfo = ModelInfo.create(from: path.json) {
+                piper = Piper(modelPath: path.model.path(),
+                              andConfigPath: path.json.path())
+                piper?.delegate = self
+                model = modelInfo
+            }
         }
     }
 
     public override func deallocateRenderResources() {
         super.deallocateRenderResources()
         piper = nil
+        model = nil
     }
 
 	// MARK: - Rendering
@@ -170,7 +174,8 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
         self.request = speechRequest
         os_unfair_lock_unlock(&outputDataLock)
         piper?.cancel()
-        piper?.synthesizeSSML(speechRequest.ssmlRepresentation)
+        piper?.synthesizeSSML(speechRequest.ssmlRepresentation,
+                              speakerId: speechRequest.voice.identifier.speakerId)
     }
     
     public override func cancelSpeechRequest() {

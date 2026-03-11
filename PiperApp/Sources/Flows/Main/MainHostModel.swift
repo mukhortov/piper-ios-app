@@ -35,6 +35,9 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
     
     func connect() {
         Task {
+#if DEBUG
+            try await Task.sleep(for: .seconds(2))
+#endif
             await self.piper.audioUnit.connect()
         }
     }
@@ -70,7 +73,8 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
             if self.viewModel.isPlaying {
                 await self.piper.stopPlaying()
             } else {
-                await self.piper.playSample(demoText: demoText)
+                await self.piper.playSample(demoText: demoText,
+                                            speakerId: self.viewModel.selectedSpeaker)
             }
         }
     }

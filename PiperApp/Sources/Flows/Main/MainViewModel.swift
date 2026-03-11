@@ -13,4 +13,5 @@ struct MainViewModel {
     var errorMessage: String?
     var modelInfo: ModelInfo?
     var isPlaying: Bool = false
+    var selectedSpeaker: Int = 0
 }

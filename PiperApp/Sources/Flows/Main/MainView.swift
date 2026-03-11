@@ -81,6 +81,17 @@ struct MainView: View {
                 }
             }
             
+            if let modelInfo = hostModel.viewModel.modelInfo {
+                if !modelInfo.speakers.isEmpty {
+                    Picker("speaker".localized, selection: $hostModel.viewModel.selectedSpeaker) {
+                        ForEach(modelInfo.speakers.keys.sorted(), id: \.self) { speakerKey in
+                            Text(speakerKey.capitalized)
+                                .tag(modelInfo.speakers[speakerKey]!)
+                        }
+                    }
+                }
+            }
+            
             TextField("sample_text", text: $hostModel.viewModel.demoText, axis: .vertical)
                 .lineLimit(1...10)
                 .accessibilityLabel("sample_text: \(hostModel.viewModel.demoText)")
