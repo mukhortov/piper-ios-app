@@ -2,7 +2,7 @@
     "recommendations": [
         "tombi-toml.tombi",
         "hverlin.mise-vscode",
-        "sswg.swift-lang",
-        "sweetpad.sweetpad"
+        "sweetpad.sweetpad",
+        "swiftlang.swift-vscode"
     ]
 }

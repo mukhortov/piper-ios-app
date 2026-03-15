@@ -109,7 +109,6 @@ jobs:
 
       - name: Prepare Project
         run: |
-          mise run lfs
           rm -fr *.xcodeproj | echo "Failed to remove project"
           rm -fr *.xcworkspace | echo "Failed to remove workspace"
           mise run install

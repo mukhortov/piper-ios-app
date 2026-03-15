@@ -4,7 +4,6 @@
 [tools]
 tuist = "4.153.0"
 swiftlint = "latest"
-git-lfs = "latest"
 
 [tasks.install]
 description = "Resolve and fetch SPM dependencies (Package.swift)"
@@ -34,10 +33,6 @@ run = '''
 REPORT_TYPE="xcode" \
 ./PiperApp/BuildScripts/Linting/SwiftLint/RunSwiftLint.sh ${usage_fix:+--fix}
 '''
-
-[tasks.lfs]
-description = "Ensure Git LFS files are pulled"
-run = "git lfs install && git lfs pull"
 
 [tasks.build]
 description = "Build for Simulator (default) or Device with a build number"
