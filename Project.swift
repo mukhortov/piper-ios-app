@@ -57,7 +57,6 @@ let project = Project(
             infoPlist: "\(appName)/Resources/Info.plist",
             sources: ["\(appName)/Sources/**"],
             resources: [
-                "\(appName)/Resources/model/*",
                 "\(appName)/Resources/Localization/*",
                 "\(appName)/Resources/Assets.xcassets"
             ],

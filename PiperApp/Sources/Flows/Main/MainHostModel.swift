@@ -9,28 +9,15 @@ import UIKit
 class MainHostModel: @unchecked Sendable, ObservableObject {
     @Published var viewModel: MainViewModel
     private var statusObservation: AnyCancellable?
-    private var playingCancellable: AnyCancellable?
     let piper: PiperManager
     
     init(piper: PiperManager) {
         self.piper = piper
-        let isInstalled = piper.isVoiceInstalled
-        let modelInfo = piper.modelInfo
-        viewModel = MainViewModel(installed: isInstalled,
-                                  modelInfo: modelInfo)
-        updateSample()
-        if isInstalled {
-            connect()
-            setupAudioUnitObservation()
-        }
-        
-        playingCancellable = piper.$isPlaying.sink { [weak self] isPlaying in
-            guard let self = self else {
-                return
-            }
-            
-            self.viewModel.isPlaying = isPlaying
-        }
+        viewModel = MainViewModel(installedModels: piper.installedVoices.sorted(by: { model1, model2 in
+            return model1.modelTitle < model2.modelTitle
+        }))
+        connect()
+        setupAudioUnitObservation()
     }
     
     func connect() {
@@ -48,57 +35,6 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
             .sink { [weak self] status in
                 self?.viewModel.showConnectLoadingIndicator = status != PiperAudioUnit.Status.connected
             }
-    }
-    
-    func install() {
-        viewModel.showInstallLoadingIndicator = true
-        Task { [weak self] in
-            await self?.piper.install(paths: self?.piper.modelPaths)
-            await MainActor.run { [weak self] in
-                self?.viewModel.installed = FileManager.default.isInstalled
-                self?.viewModel.showInstallLoadingIndicator = false
-            }
-
-            self?.setupAudioUnitObservation()
-        }
-    }
-    
-    func play() {
-        let demoText = viewModel.demoText
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            
-            if self.viewModel.isPlaying {
-                await self.piper.stopPlaying()
-            } else {
-                await self.piper.playSample(demoText: demoText,
-                                            speakerId: self.viewModel.selectedSpeaker)
-            }
-        }
-    }
-    
-    func updateSample() {
-        guard let sampleJSONData = NSDataAsset(name: "Samples")?.data else {
-            return
-        }
-        
-        do {
-            let decoder = JSONDecoder()
-            let samples = try decoder.decode([String: String].self, from: sampleJSONData)
-            if  let code = viewModel.modelInfo?.language.code,
-                let sample = samples[code] {
-                viewModel.demoText = sample
-            }
-        } catch {
-            Log.error("Failed to decode samples: \(error)")
-        }
-    }
-    
-    func uninstall() {
-        piper.unstall()
-        modelDidChange()
     }
     
     func selected(files: [URL]) {
@@ -131,14 +67,19 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
             return
         }
         
-        if ModelInfo.create(from: paths.json) == nil {
+        if (try? ModelInfo.create(from: paths.json)) == nil {
             Log.error("Failed to create ModelInfo from modelJSON")
             return
         }
         
-        piper.saveToDocumentsAndInstallIfNeeded(paths: paths)
-        viewModel.modelInfo = piper.modelInfo
-        modelDidChange()
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            
+            await self.piper.install(paths: paths)
+            self.modelDidChange()
+        }
     }
 }
 
@@ -146,11 +87,9 @@ extension MainHostModel: ModelChangeDelegate {
     func modelDidChange() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let isInstalled = self.piper.isVoiceInstalled
-            let modelInfo = self.piper.modelInfo
-            self.viewModel = MainViewModel(installed: isInstalled,
-                                           modelInfo: modelInfo)
-            self.updateSample()
+            self.viewModel = MainViewModel(installedModels: piper.installedVoices.sorted(by: { model1, model2 in
+                return model1.modelTitle < model2.modelTitle
+            }))
         }
     }
 }

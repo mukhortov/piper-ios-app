@@ -9,9 +9,9 @@ struct ModelInfoView: View {
     var detailed: Bool = false
     var body: some View {
         Section("app_voice_info") {
-            InfoViewRow(title: "model".localized, value: info.dataset.capitalized)
-            InfoViewRow(title: "country".localized, value: info.language.countryEnglish)
-            InfoViewRow(title: "language".localized, value: info.language.nameEnglish + " " + info.language.nameNative)
+            InfoViewRow(title: "model".localized, value: info.name.capitalized)
+            InfoViewRow(title: "country".localized, value: info.language.country)
+            InfoViewRow(title: "language".localized, value: info.language.language)
             if detailed {
                 InfoViewRow(title: "version".localized, value: info.piperVersion)
                 InfoViewRow(title: "quality".localized, value: info.audio.quality)

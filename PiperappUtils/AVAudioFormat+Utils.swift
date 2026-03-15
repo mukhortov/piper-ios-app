@@ -5,11 +5,12 @@ import AVFoundation
 
 extension AVAudioFormat {
     public static var defaultFormat: AVAudioFormat? {
-        let sampleRate = if let installed = ModelInfo.installed {
-            installed.audio.sampleRate
-        } else {
-            16000.0
-        }
-        return AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: 1, interleaved: true)
+        return AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 22050.0, channels: 1, interleaved: true)
+    }
+}
+
+extension ModelInfo {
+    public var audioFormat: AVAudioFormat? {
+        return AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: audio.sampleRate, channels: 1, interleaved: true)
     }
 }

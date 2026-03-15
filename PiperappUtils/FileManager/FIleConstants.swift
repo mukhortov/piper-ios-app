@@ -1,10 +1,6 @@
-//
-//  FIleConstants.swift
-//  Piper
-//
-//  Created by Ihor Shevchuk on 2026-02-21.
-//  Copyright © 2026 Ihor Shevchuk. All rights reserved.
-//
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Ihor Shevchuk
+
 import Foundation
 
 extension FileManager {
@@ -17,6 +13,15 @@ extension FileManager {
         
         public static var modelURL: URL? {
             return sharedFolder?.appendingPathComponent(PiperAppUtils.Constants.modelFileNameWithExtension)
+        }
+        
+        public static var modelsFolderURL: URL? {
+            return sharedFolder?.appendingPathComponent(PiperAppUtils.Constants.modelsFolderName)
+        }
+        
+        public static var modelsJsonURL: URL? {
+            return sharedFolder?.appendingPathComponent(PiperAppUtils.Constants.modelsFolderName)
+                .appendingPathComponent(PiperAppUtils.Constants.modelsJSONFileName, conformingTo: PiperAppUtils.Constants.jsonUTI)
         }
         
         public static var jsonModelURL: URL? {

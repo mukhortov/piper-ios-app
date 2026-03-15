@@ -45,7 +45,7 @@ class VoiceLoader {
         }
         
         let (jsonLocalURL, _) = try await URLSession.shared.download(from: jsonURL)
-        if ModelInfo.create(from: jsonLocalURL) == nil {
+        if (try? ModelInfo.create(from: jsonLocalURL)) == nil {
             do {
                 try FileManager.default.removeItem(at: jsonLocalURL)
             } catch {

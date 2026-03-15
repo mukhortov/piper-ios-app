@@ -51,14 +51,16 @@ class VoicesListHostModel: @unchecked Sendable, ObservableObject {
     }
     
     func download(voice: Voice) {
-        Task {
-            await MainActor.run {
+        Task { [weak self] in
+            guard let self else { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
                 self.viewModel.downloadingVocieKey = voice.key
             }
             
             do {
                 let modelPath = try await self.loader.download(voice: voice)
-                self.piper.saveToDocumentsAndInstallIfNeeded(paths: modelPath)
+                await self.piper.install(paths: modelPath)
                 try? FileManager.default.removeItem(at: modelPath.json)
                 try? FileManager.default.removeItem(at: modelPath.model)
                 self.delegate?.modelDidChange()
@@ -72,10 +74,12 @@ class VoicesListHostModel: @unchecked Sendable, ObservableObject {
         }
     }
     
-    func isSavedToDocuments(_ voice: Voice) -> Bool {
-        guard let modelInfo = self.piper.modelInfo else {
-            return false
+    func isInstalled(_ voice: Voice) -> Bool {
+        self.piper.installedVoices.contains { modelPath in
+            guard let modelInfo = modelPath.info else {
+                return false
+            }
+            return modelInfo.dataset == voice.name && modelInfo.audio.quality == voice.quality
         }
-        return modelInfo.dataset == voice.name && modelInfo.audio.quality == voice.quality
     }
 }

@@ -6,33 +6,10 @@ import PiperAppUtils
 import AVFoundation
 
 class PiperManager {
-    var isVoiceInstalled: Bool {
-        FileManager.default.isInstalled
+    var installedVoices: [FileManager.ModelPaths] {
+        FileManager.ModelPaths.installedModels
     }
-    
-    var installedModelInfo: ModelInfo? {
-        if !isVoiceInstalled {
-            return nil
-        }
-        return ModelInfo.installed
-    }
-    
-    var modelPaths: FileManager.ModelPaths? {
-        if let documentsPaths = FileManager.ModelPaths.documents,
-           documentsPaths.exist {
-            return documentsPaths
-        }
-        return Bundle.main.modelPaths
-    }
-    
-    var modelInfo: ModelInfo? {
-        if let installedModelInfo = installedModelInfo {
-            return installedModelInfo
-        }
-        
-        return ModelInfo.create(from: modelPaths?.json)
-    }
-    
+
     @Published var isPlaying: Bool = false
     @MainActor
     func setIsPlaying(_ isPlaying: Bool) {
@@ -60,20 +37,25 @@ class PiperManager {
 #endif
     
     func playSample(demoText: String,
-                    speakerId: Int) async {
+                    speakerId: Int,
+                    modelInfo: ModelInfo) async {
 #if os(iOS)
         activatePlaybackMode()
         setAudioSession(active: true)
 #endif
         await setIsPlaying(true)
-        if isVoiceInstalled {
-            let voiceIdentifer = "dev.ihor-shevchuk.piperapp.pipertts.\(modelInfo?.dataset.lowercased() ?? "")_\(speakerId)"
-            if let voice = AVSpeechSynthesisVoice(identifier: voiceIdentifer) {
+        if modelInfo.installedPath?.isInstalled == true {
+            let piperVoiceId = if modelInfo.numberOfSpeakers > 1 {
+                "\(modelInfo.voiceId)_\(speakerId)"
+            } else {
+                modelInfo.voiceId
+            }
+            if let voice = AVSpeechSynthesisVoice(identifier: "dev.ihor-shevchuk.piperapp.pipertts.\(piperVoiceId)") {
                 syntheser = SpeechSynthesizer()
                 await syntheser?.speak(demoText, voice: voice)
             } else {
                 await audioUnit.play(text: demoText,
-                                     speakerId: speakerId)
+                                     piperVoiceId: piperVoiceId)
             }
         }
         
@@ -99,30 +81,17 @@ class PiperManager {
         }
     }
     
-    func unstall() {
-        guard let installedPath = FileManager.ModelPaths.engine else {
+    func unstall(paths: FileManager.ModelPaths) {
+        if !paths.exist {
             Log.debug("Nothing to uninstall")
             return
         }
-        
+
         do {
-            try FileManager.default.uninstall(paths: installedPath)
+            try FileManager.default.uninstall(paths: paths)
             AVSpeechSynthesisProviderVoice.updateSpeechVoices()
         } catch {
             Log.error("Error happened during uninstalling. Error:\(error)")
-        }
-    }
-    
-    func saveToDocumentsAndInstallIfNeeded(paths: FileManager.ModelPaths) {
-        do {
-            try FileManager.default.saveToDocuments(paths: paths)
-            if isVoiceInstalled {
-                Task { [weak self] in
-                    await self?.install(paths: paths)
-                }
-            }
-        } catch {
-            Log.error("Error happened during saving to Documents. Error:\(error)")
         }
     }
 }

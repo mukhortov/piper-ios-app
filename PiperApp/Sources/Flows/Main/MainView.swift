@@ -37,113 +37,11 @@ struct MainView: View {
     }
     
     @ViewBuilder
-    private func buttonImageView(systemName: String) -> some View {
-        Image(systemName: systemName)
-            .imageScale(.large)
-            .foregroundColor(.accentColor)
-    }
-    
-    @ViewBuilder
-    func playSampleView() -> some View {
-        Section {
-            if !hostModel.viewModel.showConnectLoadingIndicator {
-                Button {
-                    hostModel.play()
-                } label: {
-                    CenteredContent {
-                        if hostModel.viewModel.isPlaying {
-                            buttonImageView(systemName: "stop")
-                            Text("stop")
-                        } else {
-                            buttonImageView(systemName: "play")
-                            Text("play_sample")
-                        }
-                    }
-                    .accessibilityElement(children: .combine)
-                }
-                .alignmentGuide(.listRowSeparatorLeading) { _ in
-                    return 0
-                }
-            }
-            if hostModel.piper.audioUnit.status != .connected && hostModel.viewModel.installed {
-                Button {
-                    hostModel.connect()
-                } label: {
-                    CenteredContent {
-                        if hostModel.viewModel.showConnectLoadingIndicator {
-                            CenteredContent {
-                                ProgressView()
-                            }
-                        } else {
-                            Text("connect")
-                        }
-                    }
-                }
-            }
-            
-            if let modelInfo = hostModel.viewModel.modelInfo {
-                if !modelInfo.speakers.isEmpty {
-                    Picker("speaker".localized, selection: $hostModel.viewModel.selectedSpeaker) {
-                        ForEach(modelInfo.speakers.keys.sorted(), id: \.self) { speakerKey in
-                            Text(speakerKey.capitalized)
-                                .tag(modelInfo.speakers[speakerKey]!)
-                        }
-                    }
-                }
-            }
-            
-            TextField("sample_text", text: $hostModel.viewModel.demoText, axis: .vertical)
-                .lineLimit(1...10)
-                .accessibilityLabel("sample_text: \(hostModel.viewModel.demoText)")
-        }
-    }
-    
-    @ViewBuilder
-    func notInstalledView() -> some View {
-        VStack {
-            Button {
-                hostModel.install()
-            } label: {
-                if hostModel.viewModel.showInstallLoadingIndicator {
-                    CenteredContent {
-                        ProgressView()
-                    }
-                } else {
-                    Text("install_voice_button")
-                }
-            }
-            .disabled(hostModel.viewModel.showInstallLoadingIndicator)
-        }
-    }
-    
-    @State var unstallConfirmationShown: Bool = false
-    
-    @ViewBuilder
     func downloadVoice() -> some View {
         NavigationLink {
             VoicesListView(hostModel: VoicesListHostModel(piper: hostModel.piper, delegate: hostModel))
         } label: {
             Text("download_voice_model")
-        }
-    }
-    
-    @ViewBuilder
-    func uninstall() -> some View {
-        if hostModel.viewModel.installed {
-            Button {
-                unstallConfirmationShown.toggle()
-            } label: {
-                Text("uninstall_voice")
-                    .foregroundStyle(.red)
-            }
-            .alert("uninstall_voice", isPresented: $unstallConfirmationShown) {
-                Button("uninstall_button", role: .destructive) {
-                    hostModel.uninstall()
-                }
-                Button("cancel", role: .cancel) {
-                    unstallConfirmationShown.toggle()
-                }
-            }
         }
     }
     
@@ -168,26 +66,64 @@ struct MainView: View {
         })
     }
     
+    @ViewBuilder
+    func helpItem(text: String,
+                  icon: String) -> some View {
+        HStack(alignment: .top) {
+            let attributedText = (try? AttributedString(markdown: text)) ?? AttributedString(text)
+            Image(systemName: icon)
+                .accessibilityHidden(true)
+            Text(attributedText)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
+
             List {
-                if let modelInfo = hostModel.viewModel.modelInfo {
-                    ModelInfoView(info: modelInfo)
-                }
-                if hostModel.viewModel.installed {
-                    playSampleView()
+                
+                if !hostModel.viewModel.installedModels.isEmpty {
+                    Section("installed_voices") {
+                        ForEach(hostModel.viewModel.installedModels, id: \.self) { model in
+                            if model.info != nil {
+                                NavigationLink(value: model) {
+                                    Text(model.modelTitle)
+                                        .font(.title2)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if hostModel.viewModel.installedModels.isEmpty {
+                        helpItem(text: String(localized: "no_voices_message"),
+                                 icon: "square.and.arrow.down")
+                    }
                 }
                 Section {
                     downloadVoice()
                     selectFromFiles()
-                    if !hostModel.viewModel.installed {
-                        notInstalledView()
-                    } else {
-                        uninstall()
+                }
+                
+                if hostModel.piper.audioUnit.status != .connected {
+                    Button {
+                        hostModel.connect()
+                    } label: {
+                        CenteredContent {
+                            if hostModel.viewModel.showConnectLoadingIndicator {
+                                CenteredContent {
+                                    ProgressView()
+                                }
+                            } else {
+                                Text("connect")
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("piper_app_name")
+            .navigationDestination(for: FileManager.ModelPaths.self) { modelPaths in
+                VoiceView(hostModel: VoiceHostModel(piper: hostModel.piper, modelPaths: modelPaths, delegate: hostModel))
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     helpButtonView()
@@ -205,8 +141,4 @@ struct MainView: View {
             HelpView(isPresented: $hostModel.viewModel.showHelp)
         }
     }
-}
-
-#Preview {
-    MainView(hostModel: MainHostModel(piper: PiperManager()))
 }

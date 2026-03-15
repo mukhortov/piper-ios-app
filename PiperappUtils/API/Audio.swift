@@ -11,3 +11,16 @@ public struct Audio: Decodable {
     public let sampleRate: Double
     public let quality: String
 }
+
+extension Audio: Equatable {
+    static public func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.sampleRate == rhs.sampleRate && lhs.quality == rhs.quality
+    }
+}
+
+extension Audio: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(sampleRate)
+        hasher.combine(quality)
+    }
+}

@@ -8,14 +8,32 @@ public struct Language: Decodable {
         case code
         case family
         case region
-        case nameNative = "name_native"
-        case nameEnglish = "name_english"
-        case countryEnglish = "country_english"
     }
     public let code: String
     public let family: String
     public let region: String
-    public let nameNative: String
-    public let nameEnglish: String
-    public let countryEnglish: String
+    
+    public var country: String {
+        Locale.current.localizedString(forRegionCode: region) ?? region
+    }
+    
+    public var language: String {
+        Locale.current.localizedString(forLanguageCode: family) ?? family
+    }
+}
+
+extension Language: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.code == rhs.code
+        && lhs.family == rhs.family
+        && lhs.region == rhs.region
+    }
+}
+
+extension Language: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(code)
+        hasher.combine(family)
+        hasher.combine(region)
+    }
 }

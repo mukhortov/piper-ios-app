@@ -93,7 +93,7 @@ class PiperAudioUnit {
     }
     
     func play(text: String,
-              speakerId: Int) async {
+              piperVoiceId: String) async {
         
         guard let audioUnit else {
             Log.error("Audio unit is nil. Can't play text.")
@@ -101,7 +101,7 @@ class PiperAudioUnit {
         }
         
         let voice = AVSpeechSynthesisProviderVoice.supportedVoices.first(where: { voice in
-            return voice.identifier.hasSuffix("\(speakerId)")
+            return voice.identifier.hasSuffix(piperVoiceId)
         }) ?? AVSpeechSynthesisProviderVoice.supportedVoices.first
         
         guard let voice else {

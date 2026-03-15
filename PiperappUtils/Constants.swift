@@ -6,13 +6,18 @@ import UniformTypeIdentifiers
 
 public enum Constants {
     public static let modelFileName = "model"
+    public static let modelsFolderName = "models"
     public static let modelExtensiom = "onnx"
-    public static let jsonModelExtensiom = "json"
+    public static let jsonModelExtension = "json"
     public static var modelFileNameWithExtension: String {
         return "\(modelFileName).\(modelExtensiom)"
     }
     public static var modelJSONFileNameWithExtension: String {
-        return "\(modelFileNameWithExtension).\(jsonModelExtensiom)"
+        return "\(modelFileNameWithExtension).\(jsonModelExtension)"
+    }
+    
+    public static var modelsJSONFileName: String {
+        return "\(modelsFolderName).\(jsonModelExtension)"
     }
     
     public static let jsonUTI: UTType = .json

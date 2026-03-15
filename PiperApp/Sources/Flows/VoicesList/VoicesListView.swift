@@ -28,7 +28,7 @@ struct VoicesListView: View {
                     }
                 }
                 Spacer()
-                if hostModel.isSavedToDocuments(voice) {
+                if hostModel.isInstalled(voice) {
                     Image(systemName: "checkmark")
                         .accessibilityLabel("downloaded")
                 } else if voice.key == hostModel.viewModel.downloadingVocieKey {
@@ -46,7 +46,9 @@ struct VoicesListView: View {
     @ViewBuilder
     func voicesList(for language: String, title: String) -> some View {
         NavigationStack {
-            if let voices = hostModel.languages[language],
+            if let voices = hostModel.languages[language]?.sorted(by: { voice1, voice2 in
+                voice1.name < voice2.name
+            }),
                !voices.isEmpty {
                 List {
                     Section(content: {

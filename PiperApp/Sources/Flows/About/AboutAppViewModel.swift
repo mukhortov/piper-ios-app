@@ -7,6 +7,4 @@ import PiperAppUtils
 struct AboutAppViewModel {
     var appVersion: String
     var connectionStatus: String
-    var modelInfo: ModelInfo?
-    var isInstalled: Bool
 }

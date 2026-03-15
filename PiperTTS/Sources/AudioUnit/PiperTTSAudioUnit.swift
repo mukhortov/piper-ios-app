@@ -5,6 +5,7 @@ import AVFoundation
 
 import piper_objc
 import PiperAppUtils
+import Accelerate
 
 public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
     private var outputBus: AUAudioUnitBus
@@ -41,15 +42,6 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
     public override func allocateRenderResources() throws {
         try super.allocateRenderResources()
         Log.debug("allocateRenderResources")
-        if piper == nil {
-            if let path = FileManager.ModelPaths.engine,
-               let modelInfo = ModelInfo.create(from: path.json) {
-                piper = Piper(modelPath: path.model.path(),
-                              andConfigPath: path.json.path())
-                piper?.delegate = self
-                model = modelInfo
-            }
-        }
     }
 
     public override func deallocateRenderResources() {
@@ -174,6 +166,7 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
         self.request = speechRequest
         os_unfair_lock_unlock(&outputDataLock)
         piper?.cancel()
+        createPiperIfNeeded(voiceIdentifier: speechRequest.voice.identifier)
         piper?.synthesizeSSML(speechRequest.ssmlRepresentation,
                               speakerId: speechRequest.voice.identifier.speakerId)
     }
@@ -203,6 +196,21 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
             RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(checkIntervalSeconds))
         }
     }
+    
+    private func createPiperIfNeeded(voiceIdentifier: String) {
+        guard let model = ModelInfo.installedModelInfo(for: voiceIdentifier),
+        let paths = model.installedPath else {
+            return
+        }
+
+        if model == self.model && piper != nil {
+            return
+        }
+        piper = Piper(modelPath: paths.model.path(),
+                      andConfigPath: paths.json.path())
+        piper?.delegate = self
+        self.model = model
+    }
 
     public override var speechVoices: [AVSpeechSynthesisProviderVoice] {
         get {
@@ -220,9 +228,53 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
 extension PiperTTSAudioUnit: PiperDelegate {
     public func piperDidReceiveSamples(_ samples: UnsafePointer<Float>, withSize count: Int) {
         let buf = UnsafeBufferPointer(start: samples, count: count)
-        os_unfair_lock_lock(&outputDataLock)
-        outputData.append(contentsOf: buf)
-        os_unfair_lock_unlock(&outputDataLock)
+
+        // swiftlint:disable:next empty_count
+        if count == 0 { return }
+
+        if let modelFormat = model?.audioFormat,
+           modelFormat.sampleRate != format.sampleRate {
+            let inputCount = count
+            let inputSampleRate = modelFormat.sampleRate
+            let outputSampleRate = format.sampleRate
+            let upsampleRatio = outputSampleRate / inputSampleRate
+            let outputCount = Int(round(Double(inputCount) * upsampleRatio))
+
+            var output = [Float](repeating: 0, count: outputCount)
+
+            // Create positions array for interpolation
+            var rampStart: Float = 0
+            var positions = [Float](repeating: 0, count: outputCount)
+            var rampStep: Float = (inputCount > 1 && outputCount > 1) ? Float(inputCount - 1) / Float(outputCount - 1) : 0
+            vDSP_vramp(&rampStart, &rampStep, &positions, 1, vDSP_Length(outputCount))
+
+            // Perform linear interpolation
+            output.withUnsafeMutableBufferPointer { outPtr in
+                positions.withUnsafeBufferPointer { posPtr in
+                    buf.baseAddress!.withMemoryRebound(to: Float.self, capacity: inputCount) { inPtr in
+                        vDSP_vlint(
+                            inPtr,                    // input samples
+                            posPtr.baseAddress!,       // positions
+                            1,                         // stride of positions
+                            outPtr.baseAddress!,       // output buffer
+                            1,                         // stride of output
+                            vDSP_Length(outputCount),  // number of output samples
+                            vDSP_Length(inputCount)    // number of input samples
+                        )
+                    }
+                }
+            }
+
+            os_unfair_lock_lock(&outputDataLock)
+            outputData.append(contentsOf: output)
+            os_unfair_lock_unlock(&outputDataLock)
+
+        } else {
+            // No resampling needed
+            os_unfair_lock_lock(&outputDataLock)
+            outputData.append(contentsOf: buf)
+            os_unfair_lock_unlock(&outputDataLock)
+        }
     }
 }
 

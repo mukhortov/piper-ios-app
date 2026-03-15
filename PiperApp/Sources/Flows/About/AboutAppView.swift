@@ -50,10 +50,6 @@ struct AboutAppView: View {
                                  description: String(localized: "license_main_app_description"))
                 }
                 
-                if let model = hostModel.viewModel.modelInfo {
-                    ModelInfoView(info: model, detailed: true)
-                }
-                
                 InfoViewRow(title: "audio_unit_status".localized, value: hostModel.viewModel.connectionStatus)
                 
                 InfoViewRow(title: "app_version".localized, value: hostModel.viewModel.appVersion)

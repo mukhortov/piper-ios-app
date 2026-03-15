@@ -8,6 +8,7 @@ extension FileManager {
     enum InstallError: Swift.Error {
         case invalidSourceFiles
         case invalidDestinationURLs
+        case cantParseModelInfo
     }
     
     func install(paths: ModelPaths?) throws {
@@ -15,67 +16,58 @@ extension FileManager {
             throw InstallError.invalidSourceFiles
         }
         
-        guard let destination = ModelPaths.engine else {
+        guard let destination = ModelPaths.installNew else {
             throw InstallError.invalidDestinationURLs
         }
         
+        guard let info = paths.info else {
+            throw InstallError.cantParseModelInfo
+        }
+        
         do {
-           try uninstall(paths: destination)
+            if let installedPath = info.installedPath {
+                try uninstall(paths: installedPath)
+            }
         } catch {
             Log.debug("Error happened while uninstalling. Error: \(error)")
         }
         
         let fileManager = FileManager.default
-        try fileManager.copyItem(at: paths.model, to: destination.model)
+        try fileManager.createModelPathsFolder(paths: destination)
         try fileManager.copyItem(at: paths.json, to: destination.json)
+        try fileManager.copyItem(at: paths.model, to: destination.model)
+        var installedModels = FileManager.ModelPaths.installedModels
+        installedModels.append(destination)
+        FileManager.ModelPaths.installedModels = installedModels
     }
     
     func uninstall(paths: ModelPaths?) throws {
         
-        guard let installed = ModelPaths.engine else {
+        guard let installed = paths else {
             throw InstallError.invalidDestinationURLs
         }
         
+        var installedModels = FileManager.ModelPaths.installedModels
+        installedModels.removeAll(where: { path in
+            path == paths
+        })
+        FileManager.ModelPaths.installedModels = installedModels
         let fileManager = FileManager.default
         try fileManager.removeItem(at: installed.model)
         try fileManager.removeItem(at: installed.json)
-    }
-    
-    func saveToDocuments(paths: ModelPaths) throws {
-        guard let documents = FileManager.ModelPaths.documents else {
-            throw InstallError.invalidDestinationURLs
-        }
         
-        let fileManager = FileManager.default
-        do {
-            try fileManager.removeItem(at: documents.model)
-            try fileManager.removeItem(at: documents.json)
-        } catch {
-            Log.debug("Error happened while removing old files. Error: \(error)")
+        if let modelFolder = installed.modelFolder {
+            try fileManager.removeItem(at: modelFolder)
         }
-        
-        try fileManager.copyItem(at: paths.model, to: documents.model)
-        try fileManager.copyItem(at: paths.json, to: documents.json)
-    }
-}
-
-extension FileManager.Constants {
-    private static var documentsURL: URL? {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-    }
-    
-    static var modelDocumentsURL: URL? {
-        return documentsURL?.appendingPathComponent(PiperAppUtils.Constants.modelFileNameWithExtension)
-    }
-    
-    static var jsonModelDocumentsURL: URL? {
-        return documentsURL?.appendingPathComponent(PiperAppUtils.Constants.modelJSONFileNameWithExtension)
     }
 }
 
 extension FileManager.ModelPaths {
-    static var documents: FileManager.ModelPaths? {
-        return FileManager.ModelPaths(model: FileManager.Constants.modelDocumentsURL,
-                                      json: FileManager.Constants.jsonModelDocumentsURL)
+    var modelTitle: String {
+        guard let modelInfo = info else {
+            return "Unknown"
+        }
+        
+        return "\(modelInfo.name.capitalized) \(modelInfo.language.code.localizedLanguageFromCode)"
     }
 }

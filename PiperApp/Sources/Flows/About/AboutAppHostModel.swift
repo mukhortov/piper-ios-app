@@ -14,8 +14,6 @@ class AboutAppHostModel: @unchecked Sendable, ObservableObject {
     init(piper: PiperManager) {
         self.piper = piper
         viewModel = AboutAppViewModel(appVersion: Bundle.main.applicationVersion,
-                                      connectionStatus: piper.audioUnit.status.string,
-                                      modelInfo: piper.modelInfo,
-                                      isInstalled: piper.isVoiceInstalled)
+                                      connectionStatus: piper.audioUnit.status.string)
     }
 }

@@ -10,7 +10,7 @@ extension Array where Element == URL {
     }
     
     var json: Element? {
-        first(with: Constants.jsonModelExtensiom)
+        first(with: Constants.jsonModelExtension)
     }
     
     private func first(with pathExtension: String) -> Element? {
@@ -26,7 +26,7 @@ extension Array where Element == String {
     }
     
     var json: Element? {
-        first(with: Constants.jsonModelExtensiom)
+        first(with: Constants.jsonModelExtension)
     }
     
     private func first(with pathExtension: String) -> Element? {
