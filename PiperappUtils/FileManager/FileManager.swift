@@ -30,8 +30,7 @@ extension FileManager {
             
             let modelParent = model.deletingLastPathComponent()
             let jsonParent = json.deletingLastPathComponent()
-            if modelParent == jsonParent
-                && modelParent.deletingLastPathComponent() == Constants.modelsFolderURL {
+            if modelParent == jsonParent {
                 return modelParent
             }
             return nil
