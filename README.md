@@ -61,15 +61,6 @@ This installs:
 
 * Tuist
 * SwiftLint
-* Git LFS
-
----
-
-## Git LFS
-
-```bash
-mise run lfs
-```
 
 ---
 
