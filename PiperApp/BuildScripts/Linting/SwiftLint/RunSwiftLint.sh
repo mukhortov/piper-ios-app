@@ -1,9 +1,9 @@
-#!/bin/sh -x -e
+#!/bin/bash -x -e
 
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Ihor Shevchuk
 
-if  [ "$1" == "--fix" ] && [ ! -z "$CI_BUILD" ]; then
+if [ "$1" = "--fix" ] && [ -n "$CI_BUILD" ]; then
    echo "No automatic fixing on CI! Skipping"
    exit 0
 fi

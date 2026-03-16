@@ -172,4 +172,4 @@ jobs:
       - name: mise lint 
         shell: bash
         run: |
-          mise run lint
+          mise run lint --reporter github-actions-logging
