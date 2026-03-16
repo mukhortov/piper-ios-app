@@ -69,11 +69,7 @@ let project = Project(
                 .post(script: """
                               mise run lint
                               """,
-                      name: "Run SwiftLint Analizer"),
-                .post(script: """
-                              $SRCROOT/\(buildScriptPath)/Scripts/FixFrameworksMinimumOS.sh
-                              """,
-                      name: "Fix Frameworks MinimumOS")
+                      name: "Run SwiftLint Analizer")
             ],
             dependencies: [
                 .target(name: sharedUtilsName, status: .required),
