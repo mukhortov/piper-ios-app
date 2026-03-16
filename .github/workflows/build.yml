@@ -156,3 +156,18 @@ jobs:
           rm $RUNNER_TEMP/$FASTLANE_CONFIG_NAME | echo "Failed to remove fastlane config"
           rm ~/.gitconfig | echo "Failed to remove ~/.gitconfig"
           rm ~/.ssh/key-* | echo "Failed to clean ssh keys"
+
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up mise
+        uses: jdx/mise-action@v3
+        with:
+          install: true
+          cache: true
+
+      - name: mise lint 
+        run: mise run lint

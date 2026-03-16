@@ -63,11 +63,11 @@ let project = Project(
             entitlements: .dictionary(appEntitlements),
             scripts: [
                 .pre(script: """
-                             REPORT_TYPE="xcode" $SRCROOT/\(buildScriptPath)/Linting/SwiftLint/RunSwiftLint.sh --fix
+                             mise run lint --fix
                              """,
                      name: "Run SwiftLint Autocorrector"),
                 .post(script: """
-                              REPORT_TYPE="xcode" $SRCROOT/\(buildScriptPath)/Linting/SwiftLint/RunSwiftLint.sh
+                              mise run lint
                               """,
                       name: "Run SwiftLint Analizer"),
                 .post(script: """

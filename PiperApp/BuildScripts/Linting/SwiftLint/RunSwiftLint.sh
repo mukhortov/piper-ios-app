@@ -17,7 +17,7 @@ fi
 if which mise >/dev/null; then
   mise install
   mise use swiftlint
-  mise exec -- swiftlint $1 --config $(dirname "$0")/swiftlint.yml
+  mise exec -- swiftlint $1 --reporter ${REPORTER:-xcode} --config $(dirname "$0")/swiftlint.yml
 else
    # If mise was installed via brew it is needed to make symbolic lynk from mise in brew path to system path:
    # You may use next command to do this:
