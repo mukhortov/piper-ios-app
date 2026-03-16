@@ -6,6 +6,5 @@ import PiperAppUtils
 
 struct VoicesListViewModel {
     var showLoadingIndicator: Bool = false
-    var downloadingVocieKey: String?
     var languages: [String] = []
 }

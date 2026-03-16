@@ -100,8 +100,7 @@ extension FileManager {
 extension FileManager.ModelPaths: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.model.standardizedFileURL == rhs.model.standardizedFileURL &&
-        lhs.json.standardizedFileURL == rhs.json.standardizedFileURL &&
-        lhs.info == rhs.info
+        lhs.json.standardizedFileURL == rhs.json.standardizedFileURL
     }
 }
 
@@ -116,6 +115,5 @@ extension FileManager.ModelPaths: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(model.standardizedFileURL)
         hasher.combine(json.standardizedFileURL)
-        hasher.combine(info)
     }
 }

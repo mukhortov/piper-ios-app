@@ -9,41 +9,6 @@ struct VoicesListView: View {
     @StateObject var hostModel: VoicesListHostModel
     
     @ViewBuilder
-    func viewForVoiceItem(_ voice: Voice) -> some View {
-        let voiceTitle = voice.name.capitalized + " " + voice.quality + " "
-        Button {
-            hostModel.download(voice: voice)
-        } label: {
-            HStack {
-                VStack {
-                    HStack {
-                        Text(voiceTitle)
-                            .font(.body)
-                        Spacer()
-                    }
-                    HStack {
-                        Text(voice.voiceSizeString)
-                            .font(.footnote)
-                        Spacer()
-                    }
-                }
-                Spacer()
-                if hostModel.isInstalled(voice) {
-                    Image(systemName: "checkmark")
-                        .accessibilityLabel("downloaded")
-                } else if voice.key == hostModel.viewModel.downloadingVocieKey {
-                    ProgressView()
-                        .accessibilityLabel("downloading")
-                } else {
-                    Image(systemName: "square.and.arrow.down")
-                        .accessibilityLabel("download_voice")
-                }
-            }
-        }
-        .accessibilityElement(children: .combine)
-    }
-    
-    @ViewBuilder
     func voicesList(for language: String, title: String) -> some View {
         NavigationStack {
             if let voices = hostModel.languages[language]?.sorted(by: { voice1, voice2 in
@@ -53,7 +18,10 @@ struct VoicesListView: View {
                 List {
                     Section(content: {
                         ForEach(voices, id: \.key) { voice in
-                            viewForVoiceItem(voice)
+                            VoiceItemView(hostModel: VoiceItemHostModel(piper: hostModel.piper,
+                                                                        loader: hostModel.loader,
+                                                                        voice: voice,
+                                                                        delegate: hostModel.delegate))
                         }
                     }, header: {
                         Text("warning_not_tested_voices")

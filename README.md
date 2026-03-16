@@ -28,7 +28,6 @@
 * macOS 14.0+
 * Xcode 16+
 * `mise`
-* Git LFS
 
 ---
 
@@ -74,6 +73,10 @@ mise run generate
 ```
 
 Open the generated `.xcworkspace` in Xcode.
+
+```bash
+open Piper.xcworkspace 
+```
 
 > **Note:** Run `mise run install` whenever `Package.swift` or dependencies change. Otherwise `mise run generate` alone is sufficient.
 
