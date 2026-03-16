@@ -170,4 +170,6 @@ jobs:
           cache: true
 
       - name: mise lint 
-        run: mise run lint
+        shell: bash
+        run: |
+          mise run lint
