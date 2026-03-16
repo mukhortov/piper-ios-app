@@ -67,5 +67,3 @@ identifier_name:
   
 trailing_whitespace:
   ignores_empty_lines: true
-
-reporter: ${REPORT_TYPE} # reporter type (xcode, json, csv, checkstyle)
