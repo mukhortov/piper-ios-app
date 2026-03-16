@@ -7,4 +7,5 @@ import PiperAppUtils
 struct VoiceItemViewModel {
     let voice: Voice
     var isDownloading: Bool = false
+    var downloadProgress: Double = 0.0
 }

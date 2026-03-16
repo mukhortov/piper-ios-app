@@ -30,9 +30,13 @@ public struct ModelInfo: Decodable {
         return dataset ?? "Unknown"
     }
     
-    public static func create(from fileURL: URL?) throws -> ModelInfo? {
+    public enum Error: Swift.Error {
+        case nilFileURL
+    }
+    
+    public static func create(from fileURL: URL?) throws -> ModelInfo {
         guard let fileURL else {
-            return nil
+            throw Error.nilFileURL
         }
         let data = try Data(contentsOf: fileURL, options: .mappedIfSafe)
         let jsonDecoder = JSONDecoder()
@@ -48,12 +52,14 @@ public struct ModelInfo: Decodable {
     }
     
     public static var installedModels: [ModelInfo] {
-        FileManager.ModelPaths.installedModels.compactMap(\.info)
+        FileManager.ModelPaths.installedModels.compactMap { path in
+            try? path.info
+        }
     }
     
     public var installedPath: FileManager.ModelPaths? {
         return FileManager.ModelPaths.installedModels.first { paths in
-            paths.info == self
+            (try? paths.info) == self
         }
     }
     

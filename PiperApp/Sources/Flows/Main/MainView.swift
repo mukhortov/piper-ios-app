@@ -85,7 +85,7 @@ struct MainView: View {
                 if !hostModel.viewModel.installedModels.isEmpty {
                     Section("installed_voices") {
                         ForEach(hostModel.viewModel.installedModels, id: \.self) { model in
-                            if model.info != nil {
+                            if (try? model.info) != nil {
                                 NavigationLink(value: model) {
                                     Text(model.modelTitle)
                                         .font(.title2)

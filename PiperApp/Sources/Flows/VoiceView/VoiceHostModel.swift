@@ -17,7 +17,7 @@ class VoiceHostModel: @unchecked Sendable, ObservableObject {
          delegate: ModelChangeDelegate?) {
         self.piper = piper
         viewModel = VoiceViewModel(paths: modelPaths,
-                                   modelInfo: modelPaths.info)
+                                   modelInfo: try? modelPaths.info)
         self.delegate = delegate
         updateSample()
         playingCancellable = piper.$isPlaying.sink { [weak self] isPlaying in
@@ -43,7 +43,7 @@ class VoiceHostModel: @unchecked Sendable, ObservableObject {
         do {
             let decoder = JSONDecoder()
             let samples = try decoder.decode([String: String].self, from: sampleJSONData)
-            if  let code = viewModel.paths.info?.language.code,
+            if  let code = (try? viewModel.paths.info)?.language.code,
                 let sample = samples[code] {
                 viewModel.demoText = sample
             }

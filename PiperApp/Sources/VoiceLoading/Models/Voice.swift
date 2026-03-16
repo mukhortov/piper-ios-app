@@ -4,7 +4,7 @@
 import Foundation
 import PiperAppUtils
 
-struct Voice: Decodable {
+class Voice: Decodable {
     let key: String
     let name: String
     let quality: String
@@ -21,5 +21,25 @@ struct Voice: Decodable {
     }
     var jsonPath: String? {
         Array(files.keys).json
+    }
+}
+
+extension Voice: Equatable {
+    static func == (lhs: Voice, rhs: Voice) -> Bool {
+        lhs.key == rhs.key &&
+        lhs.name == rhs.name &&
+        lhs.quality == rhs.quality &&
+        lhs.language == rhs.language &&
+        lhs.files == rhs.files
+    }
+}
+
+extension Voice: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(key)
+        hasher.combine(name)
+        hasher.combine(quality)
+        hasher.combine(language)
+        hasher.combine(files)
     }
 }

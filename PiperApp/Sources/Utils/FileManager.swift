@@ -20,9 +20,7 @@ extension FileManager {
             throw InstallError.invalidDestinationURLs
         }
         
-        guard let info = paths.info else {
-            throw InstallError.cantParseModelInfo
-        }
+        let info = try paths.info
         
         do {
             if let installedPath = info.installedPath {
@@ -60,11 +58,48 @@ extension FileManager {
             try fileManager.removeItem(at: modelFolder)
         }
     }
+    
+    enum Error: Swift.Error {
+        case nilTemporaryDirectory
+    }
+    
+    private static var tempFolderInDocumentDirectory: URL? {
+        let fileManager = FileManager.default
+        let temporaryDirectoryURL = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        return temporaryDirectoryURL?.appending(component: "downloads_temp")
+    }
+    
+    private func createDownloadTemporaryDirectoryIfNeeded() throws {
+        guard let temporaryDirectoryURL = FileManager.tempFolderInDocumentDirectory else {
+            throw Error.nilTemporaryDirectory
+        }
+        if !FileManager.default.fileExists(atPath: temporaryDirectoryURL.path) {
+            try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: true)
+        }
+    }
+    
+    func cleanTemporaryDirectory() throws {
+        guard let temporaryDirectoryURL = FileManager.tempFolderInDocumentDirectory else {
+            throw Error.nilTemporaryDirectory
+        }
+        let fileManager = FileManager.default
+        try fileManager.removeItem(at: temporaryDirectoryURL)
+    }
+    
+    func moveToTemporaryDirectory(fileURL: URL) throws -> URL {
+        guard let temporaryDirectoryURL = FileManager.tempFolderInDocumentDirectory else {
+            throw Error.nilTemporaryDirectory
+        }
+        try createDownloadTemporaryDirectoryIfNeeded()
+        let movedFileURL = temporaryDirectoryURL.appendingPathComponent(UUID().uuidString)
+        try self.copyItem(at: fileURL, to: movedFileURL)
+        return movedFileURL
+    }
 }
 
 extension FileManager.ModelPaths {
     var modelTitle: String {
-        guard let modelInfo = info else {
+        guard let modelInfo = try? info else {
             return "Unknown"
         }
         

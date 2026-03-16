@@ -7,8 +7,10 @@ extension FileManager {
     public struct ModelPaths {
         public let model: URL
         public let json: URL
-        public var info: ModelInfo? {
-            return try? ModelInfo.create(from: json)
+        public var info: ModelInfo {
+            get throws {
+                return try ModelInfo.create(from: json)
+            }
         }
         public init?(model: URL?, json: URL?) {
             guard let model, let json else {
