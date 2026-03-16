@@ -10,8 +10,44 @@ struct VoiceItemView: View {
     var voice: Voice {
         hostModel.viewModel.voice
     }
-    @State var unstallConfirmationShown: Bool = false
     
+    @ViewBuilder
+    private func imageView(systemName: String) -> some View {
+        let buttonSize = 50.0
+        Image(systemName: systemName)
+            .imageScale(.large)
+            .frame(width: buttonSize, height: buttonSize)
+            .foregroundColor(.accentColor)
+    }
+    
+    @ViewBuilder
+    private func playDemo() -> some View {
+        
+        if hostModel.viewModel.isPlaying {
+            Button {
+                hostModel.stopPlaying()
+            } label: {
+                imageView(systemName: "stop")
+                    .accessibilityLabel("stop_playing")
+            }
+            .buttonStyle(PlainButtonStyle())
+        } else if hostModel.viewModel.isSampleLoading {
+            let size = 50.0
+            ProgressView()
+                .progressViewStyle(.circular)
+                .frame(width: size, height: size)
+        } else {
+            Button {
+                hostModel.playSample(voice: hostModel.viewModel.voice)
+            } label: {
+                imageView(systemName: "play")
+                    .accessibilityLabel("play_sample")
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+    }
+    
+    @State var unstallConfirmationShown: Bool = false
     @ViewBuilder
     private func download() -> some View {
         let size = 50.0
@@ -20,10 +56,8 @@ struct VoiceItemView: View {
                 Button {
                     unstallConfirmationShown.toggle()
                 } label: {
-                    Image(systemName: "trash")
-                        .imageScale(.large)
+                    imageView(systemName: "trash")
                         .accessibilityLabel("uninstall_voice")
-                        .frame(width: size, height: size)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .alert("uninstall_voice", isPresented: $unstallConfirmationShown) {
@@ -44,10 +78,8 @@ struct VoiceItemView: View {
                 Button {
                     hostModel.download(voice: voice)
                 } label: {
-                    Image(systemName: "square.and.arrow.down")
-                        .imageScale(.large)
+                    imageView(systemName: "square.and.arrow.down")
                         .accessibilityLabel("download_voice")
-                        .frame(width: size, height: size)
                 }
                 .buttonStyle(PlainButtonStyle())
             }
@@ -74,6 +106,7 @@ struct VoiceItemView: View {
             }
             .accessibilityElement(children: .combine)
             Spacer()
+            playDemo()
             download()
         }
     }

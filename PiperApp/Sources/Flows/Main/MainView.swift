@@ -88,7 +88,6 @@ struct MainView: View {
                             if (try? model.info) != nil {
                                 NavigationLink(value: model) {
                                     Text(model.modelTitle)
-                                        .font(.title2)
                                 }
                             }
                         }

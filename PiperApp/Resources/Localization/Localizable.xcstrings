@@ -789,6 +789,23 @@
         }
       }
     },
+    "stop_playing" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop Playing"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зупинити програвання"
+          }
+        }
+      }
+    },
     "uninstall_button" : {
       "extractionState" : "manual",
       "localizations" : {

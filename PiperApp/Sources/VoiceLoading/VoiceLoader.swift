@@ -21,6 +21,7 @@ class VoiceLoader: NSObject {
     }
     private enum Constants {
         static let baseURL = "https://huggingface.co/rhasspy/piper-voices/resolve/main"
+        static let sampesBaseURL = "https://rhasspy.github.io/piper-samples/samples"
         
         static var voicesURL: URL? {
             return URL(string: "\(Constants.baseURL)/voices.json")
@@ -53,6 +54,13 @@ class VoiceLoader: NSObject {
     func loadVoices() async throws -> [Voice] {
         let allVoices: [String: Voice] = try await load(url: Constants.voicesURL)
         return Array(allVoices.values)
+    }
+
+    func sampleURL(for voice: Voice, speaker: String = "0") -> URL? {
+        let languageCode = voice.language.code
+        let languageFamily = languageCode.split(separator: "_").first.map(String.init) ?? languageCode
+        let path = "\(languageFamily)/\(languageCode)/\(voice.name)/\(voice.quality)/speaker_\(speaker).mp3"
+        return URL(string: "\(Constants.sampesBaseURL)/\(path)")
     }
     
     func download(voice: Voice) -> AsyncThrowingStream<DownloadEvent, Swift.Error> {
@@ -158,8 +166,4 @@ extension VoiceLoader: URLSessionDownloadDelegate {
         observations[id]?.invalidate()
         observations[id] = nil
     }
-}
-
-extension FileManager {
-    
 }

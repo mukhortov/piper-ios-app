@@ -4,6 +4,7 @@
 import Foundation
 import Combine
 import PiperAppUtils
+import AVFoundation
 
 class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
     @Published var viewModel: VoiceItemViewModel
@@ -11,6 +12,10 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
     let loader: VoiceLoader
     var languages: [String: [Voice]] = [:]
     weak var delegate: ModelChangeDelegate?
+    private var avPlayerRateObserver: NSKeyValueObservation!
+    private var avItemStateObserver: NSKeyValueObservation!
+    
+    private var audioPlayer: AVPlayer?
     init(piper: PiperManager,
          loader: VoiceLoader,
          voice: Voice,
@@ -19,6 +24,10 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
         self.piper = piper
         self.loader = loader
         self.delegate = delegate
+    }
+    
+    deinit {
+        stopPlaying()
     }
     
     func download(voice: Voice) {
@@ -69,12 +78,56 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
         return installed(voice) != nil
     }
     
-    func installed(_ voice: Voice) -> FileManager.ModelPaths? {
+    private func installed(_ voice: Voice) -> FileManager.ModelPaths? {
         self.piper.installedVoices.first { modelPath in
             guard let modelInfo = try? modelPath.info else {
                 return false
             }
             return modelInfo.dataset == voice.name && modelInfo.audio.quality == voice.quality
         }
+    }
+    
+    func stopPlaying() {
+        NotificationCenter.default.removeObserver(self, name: AVPlayerItem.didPlayToEndTimeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: AVPlayerItem.failedToPlayToEndTimeNotification, object: nil)
+        audioPlayer?.pause()
+        audioPlayer = nil
+        avPlayerRateObserver = nil
+        avItemStateObserver = nil
+        viewModel.isPlaying = false
+        viewModel.isSampleLoading = false
+    }
+    
+    func playSample(voice: Voice) {
+        guard let sampleURL = loader.sampleURL(for: voice) else {
+            return
+        }
+        
+        viewModel.isSampleLoading = true
+        
+        let item = AVPlayerItem(url: sampleURL)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.playerItemDidPlayToEndTime(notification:)),
+                                               name: AVPlayerItem.didPlayToEndTimeNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.playerItemDidPlayToEndTime(notification:)),
+                                               name: AVPlayerItem.failedToPlayToEndTimeNotification,
+                                               object: nil)
+        audioPlayer = AVPlayer(playerItem: item)
+        self.avPlayerRateObserver = audioPlayer?.observe(\.rate, options: [.new]) { [weak self] player, _ in
+            self?.viewModel.isPlaying = player.rate == 1.0
+        }
+        
+        self.avItemStateObserver = item.observe(\.status, options: [.new]) { [weak self] item, _ in
+            self?.viewModel.isSampleLoading = item.status != .readyToPlay && item.status != .failed
+            if item.status == .failed {
+                self?.stopPlaying()
+            }
+        }
+        audioPlayer?.volume = 1.0
+        audioPlayer?.play()
+    }
+    
+    @objc func playerItemDidPlayToEndTime(notification: NSNotification) {
+        stopPlaying()
     }
 }
