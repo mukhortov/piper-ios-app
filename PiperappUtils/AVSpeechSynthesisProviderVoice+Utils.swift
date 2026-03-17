@@ -26,7 +26,7 @@ extension AVSpeechSynthesisProviderVoice {
             
             return installedModel.speakers.map { (name, id) in
                 AVSpeechSynthesisProviderVoice(name: name.capitalized,
-                                               identifier: "\(installedModel.voiceId)_\(id)",
+                                               identifier: "\(installedModel.voiceId)\(Constants.speakerIdSeparator)\(id)",
                                                primaryLanguages: [languageCode],
                                                supportedLanguages: [languageCode]
                 )

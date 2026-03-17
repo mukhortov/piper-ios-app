@@ -31,22 +31,96 @@ class PiperAudioUnit {
             self.status = status
         }
     }
+    
     private var audioUnit: AVAudioUnit?
     private let engine = AVAudioEngine()
     private var messageChannel: AUMessageChannel?
+    private var cancellables = Set<AnyCancellable>()
+    private var healthCheckTimer: Timer?
+    private let manager = AVAudioUnitComponentManager.shared()
     
-    func loadAudioUnit(with description: AudioComponentDescription) async throws -> AVAudioUnit {
-        try await withCheckedThrowingContinuation { continuation in
-            AVAudioUnit.instantiate(with: description, options: [.loadOutOfProcess]) { audioUnit, error in
-                if let error = error {
-                    continuation.resume(throwing: error)
-                } else if let audioUnit = audioUnit {
-                    continuation.resume(returning: audioUnit)
-                } else {
-                    continuation.resume(throwing: NSError(domain: NSOSStatusErrorDomain, code: Int(kAudioUnitErr_ExtensionNotFound), userInfo: [:]))
-                }
+    private func setUpEngineObservers() {
+        NotificationCenter.default.publisher(for: .AVAudioEngineConfigurationChange, object: engine)
+            .sink { [weak self] _ in
+                self?.handleEngineConfigurationChange()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
+            .sink { [weak self] note in
+                self?.handleInterruption(note)
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: AVAudioSession.routeChangeNotification)
+            .sink { [weak self] _ in
+                self?.handleRouteChange()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: AVAudioSession.mediaServicesWereResetNotification)
+            .sink { [weak self] _ in
+                self?.handleMediaServicesReset()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func startHealthCheckTimer() {
+        healthCheckTimer?.invalidate()
+        healthCheckTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] _ in
+            guard let self, let unit = self.audioUnit?.auAudioUnit else { return }
+            if !self.engine.isRunning || !unit.renderResourcesAllocated {
+                self.setStatus(.disconnected)
+                Task { await self.reconnect() }
             }
         }
+    }
+
+    private func invalidateHealthCheckTimer() {
+        healthCheckTimer?.invalidate()
+        healthCheckTimer = nil
+    }
+
+    private func handleEngineConfigurationChange() {
+        if !engine.isRunning || !(audioUnit?.auAudioUnit.renderResourcesAllocated ?? false) {
+            Task { await reconnect() }
+        }
+    }
+
+    private func handleInterruption(_ note: Notification) {
+        guard let info = note.userInfo,
+              let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue) else { return }
+
+        switch type {
+        case .began:
+            setStatus(.disconnected)
+        case .ended:
+            Task { await reconnect() }
+        @unknown default:
+            break
+        }
+    }
+
+    private func handleRouteChange() {
+        Task { await reconnect() }
+    }
+
+    private func handleMediaServicesReset() {
+        Task { await reconnect() }
+    }
+    
+    func loadAudioUnit(with description: AudioComponentDescription) async throws -> AVAudioUnit {
+        let components = manager.components(matching: description)
+        var internalError: Error = NSError(domain: NSOSStatusErrorDomain, code: Int(kAudioUnitErr_ExtensionNotFound), userInfo: [:])
+        for component in components {
+            do {
+                return try await AVAudioUnit.instantiate(with: component.audioComponentDescription, options: [.loadOutOfProcess])
+            } catch {
+                internalError = error
+            }
+        }
+        throw internalError
     }
     
     func connect() async {
@@ -71,9 +145,30 @@ class PiperAudioUnit {
             self.engine.connect(audioUnit, to: engine.outputNode, format: format)
             self.engine.prepare()
             self.engine.isAutoShutdownEnabled = true
+            
             self.messageChannel = audioUnit.auAudioUnit.messageChannel(for: "\(Self.Type.self)")
             self.audioUnit = audioUnit
-            setStatus(.connected)
+
+            let unit = audioUnit.auAudioUnit
+            if !unit.renderResourcesAllocated {
+                try? unit.allocateRenderResources()
+            }
+            do {
+                try self.engine.start()
+            } catch {
+                Log.error("Failed to start audio engine: \(error)")
+                await self.reconnect()
+                return
+            }
+
+            if self.engine.isRunning && unit.renderResourcesAllocated {
+                setStatus(.connected)
+            } else {
+                setStatus(.failedToConnect)
+            }
+
+            self.setUpEngineObservers()
+            self.startHealthCheckTimer()
             Log.debug("Connected audio unit successfully.")
         } catch {
             Log.error("Failed to connect audio unit: \(error)")
@@ -83,6 +178,9 @@ class PiperAudioUnit {
     
     func disconnect() async {
         Log.debug("Disconnecting audio unit...")
+        invalidateHealthCheckTimer()
+        cancellables.removeAll()
+        NotificationCenter.default.removeObserver(self)
         if engine.isRunning {
             engine.stop()
         }
@@ -90,6 +188,12 @@ class PiperAudioUnit {
         self.audioUnit = nil
         setStatus(.disconnected)
         Log.debug("Disconnected audio unit successfully.")
+    }
+    
+    func reconnect() async {
+        await disconnect()
+        try? await Task.sleep(for: .seconds(2.0))
+        await connect()
     }
     
     func play(text: String,
@@ -114,7 +218,13 @@ class PiperAudioUnit {
             try? auAudioUnit.allocateRenderResources()
         }
         
-        try? self.engine.start()
+        do {
+            try self.engine.start()
+        } catch {
+            Log.error("Failed to start audio engine: \(error)")
+            await reconnect()
+        }
+       
         let request = AVSpeechSynthesisProviderRequest(
           ssmlRepresentation: "<speak>\(text)</speak>",
           voice: voice

@@ -78,7 +78,7 @@ struct VoiceView: View {
     var body: some View {
         List {
             if let modelInfo = hostModel.viewModel.modelInfo {
-                ModelInfoView(info: modelInfo)
+                ModelInfoView(info: modelInfo, detailed: true)
             }
             
             playSampleView()

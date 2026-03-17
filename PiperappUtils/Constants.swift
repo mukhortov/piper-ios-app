@@ -5,6 +5,7 @@ import Foundation
 import UniformTypeIdentifiers
 
 public enum Constants {
+    public static let speakerIdSeparator = "<+>"
     public static let modelFileName = "model"
     public static let modelsFolderName = "models"
     public static let modelExtensiom = "onnx"

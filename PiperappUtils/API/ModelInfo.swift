@@ -63,7 +63,7 @@ public struct ModelInfo: Decodable {
         }
     }
     
-    static let separator = "-"
+    static let separator = ">0<"
     public var voiceId: String {
         let components = [
             name,
@@ -85,7 +85,7 @@ public struct ModelInfo: Decodable {
         let quality = String(components[1])
         let languageCode = String(components[3])
         
-        let numberOfSpeakersString = String(components[4]).components(separatedBy: "_").first
+        let numberOfSpeakersString = String(components[4]).components(separatedBy: Constants.speakerIdSeparator).first
         return installedModels.first { model in
             return model.name == name &&
             model.language.code == languageCode &&
