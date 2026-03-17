@@ -83,7 +83,9 @@ struct MainView: View {
                 if !hostModel.viewModel.installedModels.isEmpty {
                     Section("installed_voices") {
                         ForEach(hostModel.viewModel.installedModels, id: \.info?.voiceId) { model in
-                            NavigationLink(value: model) {
+                            NavigationLink {
+                                VoiceView(hostModel: VoiceHostModel(piper: hostModel.piper, modelPaths: model, delegate: hostModel))
+                            } label: {
                                 Text(model.modelTitle)
                             }
                         }
@@ -116,9 +118,6 @@ struct MainView: View {
                 }
             }
             .navigationTitle("piper_app_name")
-            .navigationDestination(for: FileManager.ModelPaths.self) { modelPaths in
-                VoiceView(hostModel: VoiceHostModel(piper: hostModel.piper, modelPaths: modelPaths, delegate: hostModel))
-            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     helpButtonView()
