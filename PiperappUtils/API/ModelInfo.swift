@@ -53,13 +53,13 @@ public struct ModelInfo: Decodable {
     
     public static var installedModels: [ModelInfo] {
         FileManager.ModelPaths.installedModels.compactMap { path in
-            try? path.info
+            path.info
         }
     }
     
     public var installedPath: FileManager.ModelPaths? {
         return FileManager.ModelPaths.installedModels.first { paths in
-            (try? paths.info) == self
+            (paths.info) == self
         }
     }
     
@@ -67,6 +67,8 @@ public struct ModelInfo: Decodable {
     public var voiceId: String {
         let components = [
             name,
+            audio.quality,
+            "\(audio.sampleRate)",
             "\(language.code)",
             "\(numberOfSpeakers)"
         ]
@@ -75,18 +77,20 @@ public struct ModelInfo: Decodable {
     
     public static func installedModelInfo(for voiceId: String) -> ModelInfo? {
         let components = voiceId.split(separator: Self.separator)
-        guard components.count == 3 else {
+        guard components.count == 5 else {
             return nil
         }
         
         let name = String(components[0])
-        let languageCode = String(components[1])
+        let quality = String(components[1])
+        let languageCode = String(components[3])
         
-        let numberOfSpeakersString = String(components[2]).components(separatedBy: "_").first
+        let numberOfSpeakersString = String(components[4]).components(separatedBy: "_").first
         return installedModels.first { model in
             return model.name == name &&
             model.language.code == languageCode &&
-            numberOfSpeakersString == "\(model.numberOfSpeakers)"
+            numberOfSpeakersString == "\(model.numberOfSpeakers)" &&
+            quality == model.audio.quality
         }
     }
 }

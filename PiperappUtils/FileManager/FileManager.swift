@@ -7,17 +7,14 @@ extension FileManager {
     public struct ModelPaths {
         public let model: URL
         public let json: URL
-        public var info: ModelInfo {
-            get throws {
-                return try ModelInfo.create(from: json)
-            }
-        }
+        public let info: ModelInfo?
         public init?(model: URL?, json: URL?) {
             guard let model, let json else {
                 return nil
             }
             self.model = model
             self.json = json
+            self.info = try? ModelInfo.create(from: json)
         }
         
         public var exist: Bool {
@@ -102,7 +99,8 @@ extension FileManager {
 extension FileManager.ModelPaths: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.model.standardizedFileURL == rhs.model.standardizedFileURL &&
-        lhs.json.standardizedFileURL == rhs.json.standardizedFileURL
+        lhs.json.standardizedFileURL == rhs.json.standardizedFileURL &&
+        lhs.info == rhs.info
     }
 }
 
@@ -111,11 +109,24 @@ extension FileManager.ModelPaths: Codable {
         case model
         case json
     }
+    public init(from decoder: any Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.model = try values.decode(URL.self, forKey: .model)
+        self.json = try values.decode(URL.self, forKey: .json)
+        self.info = try? ModelInfo.create(from: self.json)
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        try values.encode(model, forKey: .model)
+        try values.encode(json, forKey: .json)
+    }
 }
 
 extension FileManager.ModelPaths: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(model.standardizedFileURL)
         hasher.combine(json.standardizedFileURL)
+        hasher.combine(info)
     }
 }

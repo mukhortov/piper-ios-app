@@ -80,7 +80,7 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
     
     private func installed(_ voice: Voice) -> FileManager.ModelPaths? {
         self.piper.installedVoices.first { modelPath in
-            guard let modelInfo = try? modelPath.info else {
+            guard let modelInfo = modelPath.info else {
                 return false
             }
             return modelInfo.dataset == voice.name && modelInfo.audio.quality == voice.quality

@@ -20,10 +20,8 @@ extension FileManager {
             throw InstallError.invalidDestinationURLs
         }
         
-        let info = try paths.info
-        
         do {
-            if let installedPath = info.installedPath {
+            if let installedPath = paths.info?.installedPath {
                 try uninstall(paths: installedPath)
             }
         } catch {
@@ -99,7 +97,7 @@ extension FileManager {
 
 extension FileManager.ModelPaths {
     var modelTitle: String {
-        guard let modelInfo = try? info else {
+        guard let modelInfo = info else {
             return "Unknown"
         }
         

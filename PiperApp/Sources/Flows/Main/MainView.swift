@@ -79,16 +79,12 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack {
-
             List {
-                
                 if !hostModel.viewModel.installedModels.isEmpty {
                     Section("installed_voices") {
-                        ForEach(hostModel.viewModel.installedModels, id: \.self) { model in
-                            if (try? model.info) != nil {
-                                NavigationLink(value: model) {
-                                    Text(model.modelTitle)
-                                }
+                        ForEach(hostModel.viewModel.installedModels, id: \.info?.voiceId) { model in
+                            NavigationLink(value: model) {
+                                Text(model.modelTitle)
                             }
                         }
                     }

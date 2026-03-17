@@ -87,6 +87,6 @@ struct VoiceView: View {
                 uninstall()
             }
         }
-        .navigationTitle((try? hostModel.viewModel.paths.info)?.name.capitalized ?? "voice")
+        .navigationTitle(hostModel.viewModel.paths.info?.name.capitalized ?? "voice")
     }
 }
