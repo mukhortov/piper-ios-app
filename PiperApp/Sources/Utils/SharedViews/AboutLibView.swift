@@ -14,7 +14,7 @@ struct AboutLibView: View {
                 VStack {
                     Text(libTitle)
                         .bold()
-                    Image("GitHub")
+                    PiperAsset.gitHub.swiftUIImage
                         .resizable()
                         .tint(Color.white)
                         .frame(width: 40, height: 40)
