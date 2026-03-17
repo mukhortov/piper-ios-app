@@ -24,6 +24,7 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
         self.piper = piper
         self.loader = loader
         self.delegate = delegate
+        activatePlaybackMode()
     }
     
     deinit {
@@ -96,6 +97,7 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
         avItemStateObserver = nil
         viewModel.isPlaying = false
         viewModel.isSampleLoading = false
+        setAudioSession(active: false)
     }
     
     func playSample(voice: Voice) {
@@ -103,6 +105,7 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
             return
         }
         
+        setAudioSession(active: true)
         viewModel.isSampleLoading = true
         
         let item = AVPlayerItem(url: sampleURL)
@@ -129,5 +132,25 @@ class VoiceItemHostModel: @unchecked Sendable, ObservableObject {
     
     @objc func playerItemDidPlayToEndTime(notification: NSNotification) {
         stopPlaying()
+    }
+    
+    func activatePlaybackMode() {
+#if !os(macOS)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        } catch let error {
+            Log.error("Error happened during activating playback. Error:\(error)")
+        }
+#endif
+    }
+    
+    func setAudioSession(active: Bool) {
+#if !os(macOS)
+        do {
+            try AVAudioSession.sharedInstance().setActive(active)
+        } catch let error {
+            Log.error("Error happened during setting audio session active status:\(active)  Error:\(error)")
+        }
+#endif
     }
 }
