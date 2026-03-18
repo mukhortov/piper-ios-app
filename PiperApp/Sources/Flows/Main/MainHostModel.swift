@@ -46,33 +46,32 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
         let model = files.model
         let modelJSON = files.json
         
-        if model?.startAccessingSecurityScopedResource() != true {
-            Log.error("Failed to access model")
-            return
-        }
-        defer {
-            model?.stopAccessingSecurityScopedResource()
-        }
-        
-        if modelJSON?.startAccessingSecurityScopedResource() != true {
-            Log.error("Failed to access JSON")
-            return
-        }
-        defer {
-            modelJSON?.stopAccessingSecurityScopedResource()
-        }
-
         guard let paths = FileManager.ModelPaths(model: model, json: modelJSON) else {
             Log.error("Failed to find model or model JSON file")
             return
         }
         
-        if (try? ModelInfo.create(from: paths.json)) == nil {
-            Log.error("Failed to create ModelInfo from modelJSON")
-            return
-        }
-        
         Task { [weak self] in
+            defer {
+                paths.model.stopAccessingSecurityScopedResource()
+                paths.json.stopAccessingSecurityScopedResource()
+            }
+
+            if paths.model.startAccessingSecurityScopedResource() != true {
+                Log.error("Failed to access model")
+                return
+            }
+            
+            if paths.json.startAccessingSecurityScopedResource() != true {
+                Log.error("Failed to access JSON")
+                return
+            }
+            
+            if (try? ModelInfo.create(from: paths.json)) == nil {
+                Log.error("Failed to create ModelInfo from modelJSON")
+                return
+            }
+
             guard let self else {
                 return
             }
