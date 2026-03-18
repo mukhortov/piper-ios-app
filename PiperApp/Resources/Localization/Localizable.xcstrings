@@ -10,6 +10,24 @@
             "state" : "new",
             "value" : "%1$@ %2$@"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
         }
       },
       "shouldTranslate" : false
@@ -22,6 +40,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "About the App"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O aplikacji"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama Hakkında"
           }
         },
         "uk" : {
@@ -41,6 +71,18 @@
             "value" : "Install a voice from **Download Voice Model** menu to start using the app."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zainstaluj głos z menu **Pobierz model głosu**, aby rozpocząć korzystanie z aplikacji."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulamayı kullanmaya başlamak için **Ses Modelini İndir** menüsünden bir ses yükleyin."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56,6 +98,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to **Settings → Accessibility → VoiceOver → Speech**."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejdź do **Ustawienia → Dostępność → VoiceOver → Mowa**."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ayarlar → Erişilebilirlik → VoiceOver → Konuşma** bölümüne gidin."
           }
         },
         "uk" : {
@@ -75,6 +129,18 @@
             "value" : "Open **VoiceOver Utility → Speech**."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwórz **VoiceOver Utility → Mowa**."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**VoiceOver Yardımcı Programı → Konuşma**'yı açın."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90,6 +156,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap **Add Rotor Voice**, find the voice you installed under **Piper**, and select it."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stuknij **Dodaj głos rotora**, znajdź głos zainstalowany w **Piper** i wybierz go."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Rotor Sesini Ekle**'ye dokunun, yüklediğiniz sesi **Piper** altında bulun ve seçin."
           }
         },
         "uk" : {
@@ -109,6 +187,18 @@
             "value" : "Click **Add**, then select the installed voice."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij **Dodaj**, a następnie wybierz zainstalowany głos."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ekle**'ye tıklayın, ardından yüklü sesi seçin."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124,6 +214,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use **Search** if the voice does not appear in the list."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj **Szukaj**, jeśli głos nie pojawia się na liście."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses listede görünmüyorsa **Ara**'yı kullanın."
           }
         },
         "uk" : {
@@ -143,6 +245,18 @@
             "value" : "Custom voices can be installed using **Import Model from Files** by selecting a `.onnx` model and its `.json` configuration."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Własne głosy można zainstalować za pomocą **Importuj model z plików**, wybierając model `.onnx` i jego konfigurację `.json`."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel sesler, bir `.onnx` modeli ve `.json` yapılandırmasını seçerek **Dosyalardan Model İçe Aktar** ile yüklenebilir."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -160,6 +274,18 @@
             "value" : "Help"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomoc"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yardım"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -175,6 +301,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App Version"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wersja aplikacji"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama Sürümü"
           }
         },
         "uk" : {
@@ -196,6 +334,18 @@
             "value" : "Voice Information"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informacje o głosach"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Bilgisi"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -211,6 +361,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Audio Unit Status"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status jednostki audio"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Birimi Durumu"
           }
         },
         "uk" : {
@@ -230,6 +392,18 @@
             "value" : "Connected"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połączono"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlı"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -245,6 +419,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disconnected"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozłączono"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı Kesildi"
           }
         },
         "uk" : {
@@ -264,6 +450,18 @@
             "value" : "Failed to Connect"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się połączyć"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlantı Başarısız"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -279,6 +477,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
           }
         },
         "uk" : {
@@ -299,6 +509,18 @@
             "value" : "Connect"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Połącz"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bağlan"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -316,6 +538,18 @@
             "value" : "Country"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kraj"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ülke"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -331,6 +565,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Credits & Legal"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Autorzy i Licencje"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katkılar & Yasal"
           }
         },
         "uk" : {
@@ -351,6 +597,18 @@
             "value" : "Done"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gotowe"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamam"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -366,6 +624,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Download Voice"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pobierz głos"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesi İndir"
           }
         },
         "uk" : {
@@ -386,6 +656,18 @@
             "value" : "Download Voice Model"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pobierz model głosu"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Modelini İndir"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -401,6 +683,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Downloaded"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pobrano"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirildi"
           }
         },
         "uk" : {
@@ -420,6 +714,18 @@
             "value" : "Downloading"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pobieranie"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndiriliyor"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -435,6 +741,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Installed Voices"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zainstalowane głosy"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yüklenen Sesler"
           }
         },
         "uk" : {
@@ -454,6 +772,18 @@
             "value" : "Language"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Język"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dil"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -469,6 +799,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Languages"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Języki"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diller"
           }
         },
         "uk" : {
@@ -488,6 +830,18 @@
             "value" : "This Audio Unit Extension, which includes eSpeak-NG and Piper1-GPL, is licensed under GPLv3."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To rozszerzenie Audio Unit, które zawiera eSpeak-NG i Piper1-GPL, jest licencjonowane na GPLv3."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eSpeak-NG ve Piper1-GPL içeren bu Ses Birimi Eklentisi GPLv3 lisanslıdır."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -503,6 +857,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Audio Unit Extension (GPLv3)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozszerzenie Audio Unit (GPLv3)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Birimi Eklentisi (GPLv3)"
           }
         },
         "uk" : {
@@ -522,6 +888,18 @@
             "value" : "eSpeak NG is a lightweight open-source text-to-speech engine supporting over 100 languages and accents."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eSpeak NG to lekki, otwartoźródłowy silnik TTS obsługujący ponad 100 języków i akcentów."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "eSpeak NG, 100’den fazla dili ve aksanı destekleyen hafif açık kaynaklı bir metinden konuşmaya motorudur."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -537,6 +915,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Piper %@ App (MIT)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper %@ Aplikacja (MIT)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper %@ Uygulaması (MIT)"
           }
         },
         "uk" : {
@@ -556,6 +946,18 @@
             "value" : "Piper App, developed by [Ihor Shevchuk](https://ihor-shevchuk.dev), is licensed under MIT. It is a separate program and communicates with the Audio Unit Extension only via XPC."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplikacja Piper, stworzona przez [Ihora Szewczuka](https://ihor-shevchuk.dev), jest licencjonowana na MIT. To osobny program, który komunikuje się z rozszerzeniem Audio Unit wyłącznie przez XPC."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Ihor Shevchuk](https://ihor-shevchuk.dev) tarafından geliştirilen Piper Uygulaması MIT lisanslıdır. Bu ayrı bir programdır ve Ses Birimi Eklentisi ile yalnızca XPC üzerinden iletişim kurar."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -573,6 +975,18 @@
             "value" : "Piper is a fast, open-source neural text-to-speech engine developed by the OHF-Voice community."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper to szybki, otwartoźródłowy, neuronowy silnik TTS opracowany przez społeczność OHF-Voice."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper, OHF-Voice topluluğu tarafından geliştirilen hızlı, açık kaynaklı bir sinirsel metinden konuşmaya motorudur."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -585,6 +999,18 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Model"
@@ -608,6 +1034,18 @@
             "value" : "No voices available"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak dostępnych głosów"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kullanılabilir ses yok"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -625,6 +1063,18 @@
             "value" : "**No voices are installed yet.**\nUse the **Download Voice Model** button below to add a voice."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Żadne głosy nie są jeszcze zainstalowane.**\nUżyj przycisku **Pobierz model głosu** poniżej, aby dodać głos."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Henüz hiçbir ses yüklenmedi.**\nBir ses eklemek için aşağıdaki **Ses Modelini İndir** düğmesini kullanın."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -638,6 +1088,18 @@
       "isCommentAutoGenerated" : true,
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piper"
+          }
+        },
+        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Piper"
@@ -660,6 +1122,18 @@
             "value" : "Play Sample"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odtwórz próbkę"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnek Oynat"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,6 +1151,18 @@
             "value" : "Quality"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jakość"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalite"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -692,6 +1178,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sample Rate"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Częstotliwość próbkowania"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnekleme Hızı"
           }
         },
         "uk" : {
@@ -713,6 +1211,18 @@
             "value" : "Sample Text"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przykładowy tekst"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnek Metin"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -728,6 +1238,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sample Text: %1$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przykładowy tekst: %1$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Örnek Metin: %1$@"
           }
         },
         "uk" : {
@@ -747,6 +1269,18 @@
             "value" : "Share Feedback"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij opinię"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geri Bildirim Paylaş"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -762,6 +1296,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speaker"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Głośnik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoparlör"
           }
         },
         "uk" : {
@@ -781,6 +1327,18 @@
             "value" : "Stop"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durdur"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -798,6 +1356,18 @@
             "value" : "Stop Playing"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj odtwarzanie"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oynatmayı Durdur"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -813,6 +1383,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaldır"
           }
         },
         "uk" : {
@@ -833,6 +1415,18 @@
             "value" : "Remove Voice Model"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń model głosu"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses Modelini Kaldır"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -848,6 +1442,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import Model from Files"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importuj model z plików"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosyalardan Model İçe Aktar"
           }
         },
         "uk" : {
@@ -867,6 +1473,18 @@
             "value" : "Version"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wersja"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sürüm"
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -882,6 +1500,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "downloading progress %@%"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "postęp pobierania %@%"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "indirme ilerlemesi %@%"
           }
         },
         "uk" : {
@@ -902,6 +1532,18 @@
             "value" : "Note: Voice files can be large. To avoid extra charges, download using Wi-Fi or an unlimited data plan."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uwaga: Pliki głosowe mogą być duże. Aby uniknąć dodatkowych opłat, pobieraj przez Wi-Fi lub z nielimitowanym pakietem danych."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not: Ses dosyaları büyük olabilir. Ek ücretlerden kaçınmak için Wi-Fi veya sınırsız veri planı ile indirin."
+          }
+        },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -918,6 +1560,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "These voices are community-uploaded and may not be fully tested. Some files may be incomplete or behave unexpectedly. Download and install at your own risk."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te głosy zostały przesłane przez społeczność i mogą nie być w pełni przetestowane. Niektóre pliki mogą być niekompletne lub działać nieprawidłowo. Pobieraj i instaluj na własne ryzyko."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu sesler topluluk tarafından yüklenmiştir ve tamamen test edilmemiş olabilir. Bazı dosyalar eksik veya beklenmedik şekilde davranabilir. Kendi riskinizle indirin ve yükleyin."
           }
         },
         "uk" : {
