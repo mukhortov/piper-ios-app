@@ -4,7 +4,11 @@
 import Foundation
 import Combine
 import PiperAppUtils
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 class VoiceHostModel: @unchecked Sendable, ObservableObject {
     @Published var viewModel: VoiceViewModel

@@ -63,7 +63,9 @@ class PiperManager {
     }
     
     func stopPlaying() async {
+        #if os(iOS)
         setAudioSession(active: false)
+        #endif
         syntheser?.stop()
         syntheser = nil
         audioUnit.stop()

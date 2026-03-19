@@ -4,8 +4,6 @@
 import SwiftUI
 
 struct HelpView: View {
-    @Binding var isPresented: Bool
-    
     @ViewBuilder
     func helpItem(text: String,
                   icon: String) -> some View {
@@ -46,16 +44,6 @@ struct HelpView: View {
                 .font(.title2)
                 .imageScale(.large)
                 .navigationTitle("app_help_title")
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button {
-                            isPresented = false
-                        } label: {
-                            Text("done")
-                                .bold()
-                        }
-                    }
-                }
             }
         }
     }

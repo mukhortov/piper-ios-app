@@ -4,7 +4,6 @@
 import Foundation
 import Combine
 import PiperAppUtils
-import UIKit
 
 class MainHostModel: @unchecked Sendable, ObservableObject {
     @Published var viewModel: MainViewModel

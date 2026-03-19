@@ -45,7 +45,7 @@ class PiperAudioUnit {
                 self?.handleEngineConfigurationChange()
             }
             .store(in: &cancellables)
-
+        #if !os(macOS)
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)
             .sink { [weak self] note in
                 self?.handleInterruption(note)
@@ -63,6 +63,7 @@ class PiperAudioUnit {
                 self?.handleMediaServicesReset()
             }
             .store(in: &cancellables)
+        #endif
     }
 
     private func startHealthCheckTimer() {
@@ -86,7 +87,7 @@ class PiperAudioUnit {
             Task { await reconnect() }
         }
     }
-
+#if !os(macOS)
     private func handleInterruption(_ note: Notification) {
         guard let info = note.userInfo,
               let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
@@ -101,6 +102,7 @@ class PiperAudioUnit {
             break
         }
     }
+#endif
 
     private func handleRouteChange() {
         Task { await reconnect() }

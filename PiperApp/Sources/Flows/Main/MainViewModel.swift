@@ -6,7 +6,6 @@ import PiperAppUtils
 
 struct MainViewModel {
     var showConnectLoadingIndicator = false
-    var showHelp: Bool = false
     var errorMessage: String?
     var installedModels: [FileManager.ModelPaths] = []
 }

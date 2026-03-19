@@ -15,7 +15,8 @@ let configsPath = "\(buildScriptPath)/Configs"
 let defaultSettings: DefaultSettings = .recommended(excluding:
                                                         [
                                                             "CODE_SIGN_IDENTITY",
-                                                            "PROVISIONING_PROFILE_SPECIFIER"
+                                                            "PROVISIONING_PROFILE_SPECIFIER",
+                                                            "ENABLE_HARDENED_RUNTIME"
                                                         ]
 )
 // MARK: - Destinations
@@ -40,7 +41,8 @@ let appEntitlements: [String: Plist.Value] = [
     "com.apple.security.application-groups": .array([
         .string(sharedAppGroupName)
     ]),
-    "inter-app-audio": .boolean(true)
+    "inter-app-audio": .boolean(true),
+    "com.apple.security.network.client": .boolean(true)
 ]
 
 // MARK: - Project

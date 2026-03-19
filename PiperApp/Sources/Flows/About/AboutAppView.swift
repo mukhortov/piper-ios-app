@@ -7,7 +7,6 @@ import PiperAppUtils
 struct AboutAppView: View {
     
     @StateObject var hostModel: AboutAppHostModel
-    @Binding var isPresented: Bool
     
 #if os(iOS)
     private let platform = "iOS"
@@ -59,16 +58,6 @@ struct AboutAppView: View {
                 }
             }
             .navigationTitle("about_app")
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        isPresented = false
-                    } label: {
-                        Text("done")
-                            .bold()
-                    }
-                }
-            }
         } // NavigationStack
     }
 }

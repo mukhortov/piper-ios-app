@@ -7,17 +7,16 @@ import PiperAppUtils
 struct MainView: View {
     
     @StateObject var hostModel: MainHostModel
-    @State var showAboutModalView = false
-    
+
     @ViewBuilder
     func toolBarButtonView(imageName: String,
                            accessibilityLabel: String,
-                           bindingVar: Binding<Bool>) -> some View {
-        Button {
-            bindingVar.wrappedValue.toggle()
-        } label: {
+                           @ViewBuilder destination: () -> some View) -> some View {
+        NavigationLink(destination: {
+            destination()
+        }, label: {
             Image(systemName: imageName)
-        }
+        })
         .accessibilityLabel(Text(accessibilityLabel))
         .accessibilityAddTraits(.isButton)
     }
@@ -26,14 +25,18 @@ struct MainView: View {
     func aboutButtonView() -> some View {
         toolBarButtonView(imageName: "info.circle",
                           accessibilityLabel: String(localized: "about_app"),
-                          bindingVar: $showAboutModalView)
+                          destination: {
+            AboutAppView(hostModel: AboutAppHostModel(piper: self.hostModel.piper))
+        })
     }
     
     @ViewBuilder
     func helpButtonView() -> some View {
         toolBarButtonView(imageName: "questionmark.circle",
                           accessibilityLabel: String(localized: "app_help_title"),
-                          bindingVar: $hostModel.viewModel.showHelp)
+                          destination: {
+            HelpView()
+        })
     }
     
     @ViewBuilder
@@ -119,20 +122,13 @@ struct MainView: View {
             }
             .navigationTitle("piper_app_name")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .primaryAction) {
                     helpButtonView()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .primaryAction) {
                     aboutButtonView()
                 }
             }
-        }
-        .sheet(isPresented: $showAboutModalView) {
-            AboutAppView(hostModel: AboutAppHostModel(piper: self.hostModel.piper),
-                         isPresented: $showAboutModalView)
-        }
-        .sheet(isPresented: $hostModel.viewModel.showHelp) {
-            HelpView(isPresented: $hostModel.viewModel.showHelp)
         }
     }
 }

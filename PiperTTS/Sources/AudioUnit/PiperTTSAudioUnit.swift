@@ -206,8 +206,8 @@ public class PiperTTSAudioUnit: AVSpeechSynthesisProviderAudioUnit {
         if model == self.model && piper != nil {
             return
         }
-        piper = Piper(modelPath: paths.model.path(),
-                      andConfigPath: paths.json.path())
+        piper = Piper(modelPath: paths.model.path(percentEncoded: false),
+                      andConfigPath: paths.json.path(percentEncoded: false))
         piper?.delegate = self
         self.model = model
     }
