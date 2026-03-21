@@ -32,6 +32,10 @@ jobs:
       CI_BUILD: "1"
       BUILD_OUTPUT: "${{ github.workspace }}/BuildOutput"
       BUILD_TARGET: ${{ inputs.platform }}
+      ARTIFACT_PATH: >-
+        ${{ inputs.platform == 'ios-device' && 'iOS/Piper.ipa' || 
+        (inputs.platform == 'macos-device' && 'macOS/Piper.pkg' || '') }}
+      SIGN_BUILD: ${{ (inputs.platform == 'ios-device' || inputs.platform == 'macos-device') && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
     steps:
       - name: Checkout Code
@@ -51,14 +55,14 @@ jobs:
         shell: bash
 
       - name: Install Apple Certificate
-        if: inputs.platform == 'ios-device'
+        if: env.SIGN_BUILD == 'true'
         uses: apple-actions/import-codesign-certs@v6
         with:
           p12-file-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           p12-password: ${{ secrets.P12_PASSWORD }}
 
       - name: Install Provisioning Profiles
-        if: inputs.platform == 'ios-device'
+        if: env.SIGN_BUILD == 'true'
         env:
           PROFILES: >-
             ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}:ios_app.mobileprovision
@@ -103,41 +107,22 @@ jobs:
         run: |
           mise run build $BUILD_NUMBER $BUILD_TARGET
 
-      - name: Store IPA
-        if: inputs.platform == 'ios-device'
+      - name: Store Artifact
+        if: env.SIGN_BUILD == 'true'
         uses: actions/upload-artifact@v7
         with:
-          name: Piper-iOS-${{ env.BUILD_NUMBER }}
-          path: ${{ env.BUILD_OUTPUT }}/binary/iOS/Piper.ipa
+          name: Piper-${{ inputs.platform }}-${{ env.BUILD_NUMBER }}
+          path: ${{ env.BUILD_OUTPUT }}/{{ env.ARTIFACT_PATH }}
           retention-days: 3
 
       - name: Upload To App Store Connect
-        if: inputs.platform == 'ios-device'
+        if: env.SIGN_BUILD == 'true'
         run: |
-          UPLOAD_FILES=(
-            "${{ env.BUILD_OUTPUT }}/binary/iOS/Piper.ipa"
-          )
           echo "Uploading to App Store..."
-          for FILE in "${UPLOAD_FILES[@]}"; do
-            echo "Uploading $FILE ..."
-            xcrun altool --upload-app  \
-              -f "$FILE" \
-              -u "${{ secrets.APPLE_ID_USERNAME }}" \
-              -p "${{ secrets.APPLE_ID_APP_SPECIFIC_PASSWORD }}" \
-              -t ios
+          FILE="${{ env.BUILD_OUTPUT }}/{{ env.ARTIFACT_PATH }}"
+          echo "Uploading $FILE ..."
+          xcrun altool --upload-app  \
+            -f "$FILE" \
+            -u "${{ secrets.APPLE_ID_USERNAME }}" \
+            -p "${{ secrets.APPLE_ID_APP_SPECIFIC_PASSWORD }}" \
           done
-
-      - name: Clean up
-        if: always()
-        run: |
-          echo "Keychains before removing temp keychain"
-          security list-keychains | echo "Failed to list keychains"
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          security lock-keychain $KEYCHAIN_PATH | echo "Failed to lock keychain at path $KEYCHAIN_PATH"
-          security delete-keychain $KEYCHAIN_PATH | echo "Failed to delete keychain at path $KEYCHAIN_PATH"
-          echo "Keychains after removing temp keychain"
-          security list-keychains | echo "Failed to list keychains"
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision | echo "Failed to remove provision profile"
-          rm $RUNNER_TEMP/$FASTLANE_CONFIG_NAME | echo "Failed to remove fastlane config"
-          rm ~/.gitconfig | echo "Failed to remove ~/.gitconfig"
-          rm ~/.ssh/key-* | echo "Failed to clean ssh keys"
