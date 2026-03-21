@@ -39,7 +39,7 @@ jobs:
   Build:
     strategy:
       matrix:
-        platform: ${{ github.event_name == 'pull_request' && fromJSON('["ios-simulator"]') || fromJSON('["ios-device"]') }}
+        platform: ${{ github.event_name == 'pull_request' && fromJSON('["ios-simulator"]') || fromJSON('["ios-device", "macos-device"]') }}
 
     uses: ./.github/workflows/build-shared.yml
     with:
