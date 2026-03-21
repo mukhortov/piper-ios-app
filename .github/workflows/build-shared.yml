@@ -113,14 +113,15 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Piper-${{ inputs.platform }}-${{ env.BUILD_NUMBER }}
-          path: ${{ env.BUILD_OUTPUT }}/{{ env.ARTIFACT_PATH }}
+          path: ${{ env.BUILD_OUTPUT }}/${{ env.ARTIFACT_PATH }}
           retention-days: 3
+          if-no-files-found: error
 
       - name: Upload To App Store Connect
         if: env.SIGN_BUILD == 'true'
         run: |
           echo "Uploading to App Store..."
-          FILE="${{ env.BUILD_OUTPUT }}/{{ env.ARTIFACT_PATH }}"
+          FILE="${{ env.BUILD_OUTPUT }}/${{ env.ARTIFACT_PATH }}"
           echo "Uploading $FILE ..."
           xcrun altool --upload-app  \
             -f "$FILE" \
