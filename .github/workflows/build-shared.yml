@@ -15,6 +15,10 @@ on:
         required: true
       EXT_PROVISION_PROFILE_BASE64:
         required: true
+      MAC_APP_PROVISION_PROFILE_BASE64:
+        required: true
+      MAC_EXT_PROVISION_PROFILE_BASE64:
+        required: true
       APPLE_ID_USERNAME:
         required: true
       APPLE_ID_APP_SPECIFIC_PASSWORD:
@@ -56,18 +60,23 @@ jobs:
       - name: Install Provisioning Profiles
         if: inputs.platform == 'ios-device'
         env:
-          APP_PROFILE: ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}
-          EXT_PROFILE: ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}
+          PROFILES: >-
+            ${{ secrets.APP_PROVISION_PROFILE_BASE64 }}:ios_app.mobileprovision
+            ${{ secrets.EXT_PROVISION_PROFILE_BASE64 }}:ios_ext.mobileprovision
+            ${{ secrets.MAC_APP_PROVISION_PROFILE_BASE64 }}:mac_app.provisionprofile
+            ${{ secrets.MAC_EXT_PROVISION_PROFILE_BASE64 }}:mac_ext.provisionprofile
         run: |
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          DEST_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$DEST_DIR"
 
-          APP_PATH=$RUNNER_TEMP/app.mobileprovision
-          echo -n "$APP_PROFILE" | base64 --decode -o $APP_PATH
-          EXT_PATH=$RUNNER_TEMP/ext.mobileprovision
-          echo -n "$EXT_PROFILE" | base64 --decode -o $EXT_PATH
-
-          cp $APP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $EXT_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          for entry in $PROFILES; do
+            # Split the secret from the filename
+            DATA="${entry%%:*}"
+            FILENAME="${entry#*:}"
+            
+            echo "Installing $FILENAME..."
+            echo -n "$DATA" | base64 --decode -o "$DEST_DIR/$FILENAME"
+          done
 
       - name: Select Xcode
         env:
