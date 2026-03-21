@@ -30,6 +30,7 @@ jobs:
 
     env:
       CI_BUILD: "1"
+      GITHUB_BUILD: "1"
       BUILD_OUTPUT: "${{ github.workspace }}/BuildOutput"
       BUILD_TARGET: ${{ inputs.platform }}
       ARTIFACT_PATH: >-

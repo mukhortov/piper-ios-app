@@ -3,6 +3,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Ihor Shevchuk
 
+if [ -n "$GITHUB_BUILD" ]; then
+   echo "No linting during GitHub build. It is run but separate Job! Skipping"
+   exit 0
+fi
+
 echo "Start Linting..."
 
 if [ "$1" = "--fix" ] && [ -n "$CI_BUILD" ]; then
