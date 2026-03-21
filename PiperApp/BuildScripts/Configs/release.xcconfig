@@ -5,3 +5,4 @@ LLVM_LTO = YES
 ENABLE_HARDENED_RUNTIME = YES
 
 CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Distribution
+CODE_SIGN_IDENTITY[sdk=macosx*] = 3rd Party Mac Developer Application
