@@ -7,7 +7,6 @@ import PiperAppUtils
 
 class MainHostModel: @unchecked Sendable, ObservableObject {
     @Published var viewModel: MainViewModel
-    private var statusObservation: AnyCancellable?
     let piper: PiperManager
     
     init(piper: PiperManager) {
@@ -16,7 +15,6 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
             return model1.modelTitle < model2.modelTitle
         }))
         connect()
-        setupAudioUnitObservation()
     }
     
     func connect() {
@@ -26,14 +24,6 @@ class MainHostModel: @unchecked Sendable, ObservableObject {
 #endif
             await self.piper.audioUnit.connect()
         }
-    }
-    
-    func setupAudioUnitObservation() {
-        statusObservation = self.piper.audioUnit.$status
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] status in
-                self?.viewModel.showConnectLoadingIndicator = status != PiperAudioUnit.Status.connected
-            }
     }
     
     func selected(files: [URL]) {

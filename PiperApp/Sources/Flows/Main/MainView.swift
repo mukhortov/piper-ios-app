@@ -103,22 +103,6 @@ struct MainView: View {
                     downloadVoice()
                     selectFromFiles()
                 }
-                
-                if hostModel.piper.audioUnit.status != .connected {
-                    Button {
-                        hostModel.connect()
-                    } label: {
-                        CenteredContent {
-                            if hostModel.viewModel.showConnectLoadingIndicator {
-                                CenteredContent {
-                                    ProgressView()
-                                }
-                            } else {
-                                Text("connect")
-                            }
-                        }
-                    }
-                }
             }
             .navigationTitle("piper_app_name")
             .toolbar {

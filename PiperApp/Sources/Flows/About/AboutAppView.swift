@@ -49,7 +49,16 @@ struct AboutAppView: View {
                                  description: String(localized: "license_main_app_description"))
                 }
                 
-                InfoViewRow(title: "audio_unit_status".localized, value: hostModel.viewModel.connectionStatus)
+                InfoViewRow(title: "audio_unit_status".localized, value: hostModel.viewModel.connectionStatus.string)
+                if hostModel.viewModel.connectionStatus != .connected {
+                    Button {
+                        hostModel.connect()
+                    } label: {
+                        CenteredContent {
+                            Text("connect")
+                        }
+                    }
+                }
                 
                 InfoViewRow(title: "app_version".localized, value: hostModel.viewModel.appVersion)
                 

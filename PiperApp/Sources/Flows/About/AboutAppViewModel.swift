@@ -6,5 +6,5 @@ import PiperAppUtils
 
 struct AboutAppViewModel {
     var appVersion: String
-    var connectionStatus: String
+    var connectionStatus: PiperAudioUnit.Status
 }
