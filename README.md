@@ -31,8 +31,6 @@ We want to make **Piper** accessible to everyone, regardless of the language the
 3. Select the language you'd like to help with.
 4. Start translating or vote on existing suggestions!
 
-[![Crowdin](https://badges.crowdin.net)](https://crowdin.com/project/piper-app)
-
 If your language isn't listed yet, please [open an issue](https://github.com/IhorShevchuk/piper-app/issues) or request it directly on the Crowdin project page.
 
 
