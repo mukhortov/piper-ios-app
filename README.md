@@ -20,6 +20,22 @@
 
 [![Build](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/IhorShevchuk/piper-app/actions/workflows/build.yml)
 
+# 🌐 Help Translate Piper
+
+We want to make **Piper** accessible to everyone, regardless of the language they speak! If you're fluent in another language, you can help us localize the app. No coding knowledge is required—all translations are managed through **Crowdin**.
+
+## How to contribute:
+
+1. Visit our [Crowdin Project Page](https://crowdin.com/project/piper-app).
+2. Create a free account or sign in.
+3. Select the language you'd like to help with.
+4. Start translating or vote on existing suggestions!
+
+[![Crowdin](https://badges.crowdin.net)](https://crowdin.com/project/piper-app)
+
+If your language isn't listed yet, please [open an issue](https://github.com/IhorShevchuk/piper-app/issues) or request it directly on the Crowdin project page.
+
+
 # 📥 Cloning & Building Piper
 
 ## System Requirements
