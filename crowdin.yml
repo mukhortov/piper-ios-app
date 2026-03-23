@@ -1,0 +1,8 @@
+project_id: 882974
+base_path: .
+
+preserve_hierarchy: true
+
+files:
+  - source: /PiperApp/Resources/Localization/Localizable.xcstrings
+    type: xcstrings
