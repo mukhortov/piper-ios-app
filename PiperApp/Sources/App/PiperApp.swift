@@ -15,7 +15,6 @@ struct PiperApp: App {
     @ViewBuilder
     var mainContent: some View {
         MainView(hostModel: mainModel)
-            .frame(minWidth: 400, minHeight: 300)
     }
     
     let mainModel = MainHostModel(piper: AppManager.shared.piper)
@@ -23,6 +22,7 @@ struct PiperApp: App {
         #if os(macOS)
         Window("piper_app_name".localized, id: "main") {
             mainContent
+                .frame(minWidth: 400, minHeight: 300)
         }
         #elseif os(iOS)
         WindowGroup {
